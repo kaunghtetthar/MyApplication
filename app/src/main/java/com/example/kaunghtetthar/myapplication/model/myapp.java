@@ -6,6 +6,12 @@ package com.example.kaunghtetthar.myapplication.model;
 
 public class myapp {
 
+    final String DRAWABLE = "drawable/";
+
+    public String getImgUrl() {
+        return DRAWABLE + locationImrUrl;
+    }
+
     public float getLongitude() {
         return longitude;
     }
