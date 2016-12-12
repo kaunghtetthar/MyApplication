@@ -2,7 +2,6 @@ package com.example.kaunghtetthar.myapplication.fragments;
 
 
 import android.content.Context;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -24,10 +23,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,7 +34,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private MarkerOptions userMarker;
-    private LocationsListFragment mListFregment;
 
     public MainFragment() {
         // Required empty public constructor
@@ -64,12 +59,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mListFregment = (LocationsListFragment)getActivity().getSupportFragmentManager().findFragmentById(R.id.container_locations_list);
-
-        if (mListFregment == null) {
-            mListFregment = LocationsListFragment.newInstance();
-            getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container_locations_list, mListFregment).commit();
-        }
 
         final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
         zipText.setOnKeyListener(new View.OnKeyListener() {
@@ -84,14 +73,13 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
                     InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
-                    showList();
                     updateMapForZip(zip);
                     return true;
                 }
                 return false;
             }
         });
-        hideList();
+
         return view;
     }
 
@@ -114,15 +102,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
             Log.v("DOG", "Current location: " + latLng.latitude + " Long: " + latLng.longitude);
         }
 
-        try {
-            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-            List<android.location.Address> addresses = geocoder.getFromLocation(latLng.latitude,latLng.longitude, 1);
-            int zip = Integer.parseInt(addresses.get(0).getPostalCode());
-            updateMapForZip(zip);
-        } catch (IOException exception) {
-
-        }
-
 
         updateMapForZip(12120);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
@@ -143,11 +122,4 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void hideList() {
-        getActivity().getSupportFragmentManager().beginTransaction().hide(mListFregment).commit();
-    }
-
-    private void showList() {
-        getActivity().getSupportFragmentManager().beginTransaction().show(mListFregment).commit();
-    }
 }
