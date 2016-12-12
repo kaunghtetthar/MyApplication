@@ -1,6 +1,5 @@
 package com.example.kaunghtetthar.myapplication.fragments;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,15 +25,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link MainFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by kaunghtetthar on 12/13/16.
  */
+
 public class MainFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private MarkerOptions userMarker;
-    ArrayList<LatLng> markerPoints;
 
     public MainFragment() {
         // Required empty public constructor
@@ -85,6 +82,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -116,7 +114,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
             MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(),loc.getLongitude()));
             marker.title(loc.getLocationTitle());
             marker.snippet(loc.getLocationAddress());
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.places_ic_clear));
             mMap.addMarker(marker);
         }
 

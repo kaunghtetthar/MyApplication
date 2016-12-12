@@ -40,6 +40,15 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 .addApi(LocationServices.API)
                 .build();
 
+        mainFragment = (MainFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.container_main);
+
+        if (mainFragment == null) {
+            mainFragment = MainFragment.newInstance();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container_main, mainFragment).commit();
+        }
 
     }
 

@@ -29,12 +29,12 @@
                     android:background="#00000000"/>
 
                 //To enter the zip code
-                <!--<EditText-->
-                    <!--android:id="@+id/zip_text"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="40dp"-->
-                    <!--android:hint="@string/zip_hint"-->
-                    <!--android:inputType="number"/>-->
+                <EditText
+                    android:id="@+id/zip_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:hint="@string/zip_hint"
+                    android:inputType="number"/>
 
                 </LinearLayout>
 
