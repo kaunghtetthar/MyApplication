@@ -1,15 +1,11 @@
 package com.example.kaunghtetthar.myapplication.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.model.myapp;
@@ -58,25 +54,28 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
 
-        final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
-        zipText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
-                    //You should make sure this is a valid zip code
-                    String text = zipText.getText().toString();
-                    int zip = Integer.parseInt(text);
 
-                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
-                    updateMapForZip(zip);
-                    return true;
-                }
-                return false;
-            }
-        });
+//        final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
+//        zipText.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//
+//                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+//
+//                    //You should make sure this is a valid zip code
+//                    String text = zipText.getText().toString();
+//                    int zip = Integer.parseInt(text);
+//
+//                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
+//                    updateMapForZip(zip);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
         return view;
     }
@@ -86,11 +85,12 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-//
+
 //        // Add a marker in Sydney, Australia, and move the camera.
 //        LatLng AIT = new LatLng(14.078013, 100.614952);
 //        mMap.addMarker(new MarkerOptions().position(AIT).title("AIT parking space"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(AIT));
+
     }
 
     public void setUserMarker(LatLng latLng) {
@@ -114,7 +114,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
             MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(),loc.getLongitude()));
             marker.title(loc.getLocationTitle());
             marker.snippet(loc.getLocationAddress());
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.places_ic_clear));
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
             mMap.addMarker(marker);
         }
 
