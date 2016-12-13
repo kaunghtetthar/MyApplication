@@ -28,6 +28,11 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private MarkerOptions userMarker;
+//    private Button btnFindPath;
+//    private List<Marker> originMarkers = new ArrayList<>();
+//    private List<Marker> destinationMarkers = new ArrayList<>();
+//    private List<Polyline> polylinePaths = new ArrayList<>();
+//    private ProgressDialog progressDialog;
 
     public MainFragment() {
         // Required empty public constructor
@@ -42,9 +47,18 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+       // btnFindPath = (Button) findViewById(R.id.btnFindPath);
+
+//        btnFindPath.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                sendRequest();
+//            }
+//        });
     }
 
-    @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
@@ -79,7 +93,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
         return view;
     }
-
 
 
     @Override
@@ -119,5 +132,78 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
         }
 
     }
+//
+//    private void sendRequest() {
+//        String origin =  mMap.toString();
+//        String destination = mMap.toString();
+//
+//        try {
+//            new DirectionFinder(this, origin, destination).execute();
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @Override
+//    public void onDirectionFinderStart() {
+//        progressDialog = ProgressDialog.show(this, "Please wait.",
+//                "Finding direction..!", true);
+//
+//        if (originMarkers != null) {
+//            for (Marker marker : originMarkers) {
+//                marker.remove();
+//            }
+//        }
+//
+//        if (destinationMarkers != null) {
+//            for (Marker marker : destinationMarkers) {
+//                marker.remove();
+//            }
+//        }
+//
+//        if (polylinePaths != null) {
+//            for (Polyline polyline:polylinePaths ) {
+//                polyline.remove();
+//            }
+//        }
+//    }
+//
+//
+//
+//
+//    @Override
+//    public void onDirectionFinderSuccess(List<Route> routes) {
+//        progressDialog.dismiss();
+//        polylinePaths = new ArrayList<>();
+//        originMarkers = new ArrayList<>();
+//        destinationMarkers = new ArrayList<>();
+//
+//        for (Route route : routes) {
+//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
+//            ((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
+//            ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
+//
+//            originMarkers.add(mMap.addMarker(new MarkerOptions()
+//                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.cast_ic_notification_1))
+//                    .title(route.startAddress)
+//                    .position(route.startLocation)));
+//            destinationMarkers.add(mMap.addMarker(new MarkerOptions()
+//                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.cast_ic_notification_2))
+//                    .title(route.endAddress)
+//                    .position(route.endLocation)));
+//
+//            PolylineOptions polylineOptions = new PolylineOptions().
+//                    geodesic(true).
+//                    color(Color.BLUE).
+//                    width(10);
+//
+//            for (int i = 0; i < route.points.size(); i++)
+//                polylineOptions.add(route.points.get(i));
+//
+//            polylinePaths.add(mMap.addPolyline(polylineOptions));
+//        }
+//    }
+
+
 
 }

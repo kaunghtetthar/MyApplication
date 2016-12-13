@@ -20,7 +20,7 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="2dp">
-                
+
 
                 <ImageButton
                     android:layout_width="35dp"
@@ -29,12 +29,12 @@
                     android:background="#00000000"/>
 
                 //To enter the zip code
-                <!--<EditText-->
-                    <!--android:id="@+id/zip_text"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="40dp"-->
-                    <!--android:hint="@string/zip_hint"-->
-                    <!--android:inputType="number"/>-->
+                <EditText
+                    android:id="@+id/zip_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:hint="@string/zip_hint"
+                    android:inputType="number"/>
 
                 </LinearLayout>
 
@@ -49,7 +49,7 @@
                 android:layout_height="match_parent"
                 tools:layout="@layout/activity_maps" />
 
-            
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
