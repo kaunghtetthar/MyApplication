@@ -108,54 +108,63 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 //        });          map.setOnMapClickListener(new OnMapClickListener() {
 
 
-            public void onMapClick(LatLng latLng) {
 
-                // Already two locations
-                if(markerPoints.size()>1){
-                    markerPoints.clear();
-                    mMap.clear();
-                }
-
-                // Adding new item to the ArrayList
-                markerPoints.add(latLng);
-
-                // Creating MarkerOptions
-                MarkerOptions options = new MarkerOptions();
-
-                // Setting the position of the marker
-                options.position(latLng);
-
-                /**
-                 * For the start location, the color of marker is GREEN and
-                 * for the end location, the color of marker is RED.
-                 */
-                if(markerPoints.size()==1){
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                }else if(markerPoints.size()==2){
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                }
-
-                // Add new marker to the Google Map Android API V2
-                mMap.addMarker(options);
-
-                // Checks, whether start and end locations are captured
-                if(markerPoints.size() >= 2){
-                    LatLng origin = userMarker.getPosition();
-                    LatLng dest = markerPoints.get(0);
-
-                    // Getting URL to the Google Directions API
-                    String url = getDirectionsUrl(origin, dest);
-
-                    DownloadTask downloadTask = new DownloadTask();
-
-                    // Start downloading json data from Google Directions API
-                    downloadTask.execute(url);
-                }
-            }
         });
 
 
+
     }
+
+    public void onMapClick() {
+
+        ArrayList<myapp> locations = DataService.getInstance().getBootcampLocationWithin10MilesofZip(12120);
+
+        myapp loc = locations.get(0);
+        MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(), loc.getLongitude()));
+
+        // Checks, whether start and end locations are captured
+            LatLng latLng = userMarker.getPosition();
+            LatLng dest = marker.getPosition();
+
+            // Getting URL to the Google Directions API
+            String url = getDirectionsUrl(latLng, dest);
+
+            DownloadTask downloadTask = new DownloadTask();
+
+            // Start downloading json data from Google Directions API
+            downloadTask.execute(url);
+
+
+    }
+
+    public void setUserMarker(LatLng latLng) {
+        if (userMarker == null) {
+            userMarker = new MarkerOptions().position(latLng).title("Current location : " + latLng.latitude + "," + latLng.longitude);
+            mMap.addMarker(userMarker);
+            Log.v("DOG", "Current location: " + latLng.latitude + " Long: " + latLng.longitude);
+        }
+
+
+        updateMapForZip(12120);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+    }
+
+    private void updateMapForZip(int zipcode) {
+
+        ArrayList<myapp> locations = DataService.getInstance().getBootcampLocationWithin10MilesofZip(zipcode);
+
+        for (int x = 0; x < locations.size(); x++) {
+            myapp loc = locations.get(x);
+            MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(), loc.getLongitude()));
+            marker.title(loc.getLocationTitle());
+            marker.snippet(loc.getLocationAddress());
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
+            mMap.addMarker(marker);
+        }
+
+    }
+
+
 
     private String getDirectionsUrl(LatLng latLng,LatLng dest){
 
@@ -319,33 +328,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 
 
-    public void setUserMarker(LatLng latLng) {
-        if (userMarker == null) {
-            userMarker = new MarkerOptions().position(latLng).title("Current location : " + latLng.latitude + "," + latLng.longitude);
-            mMap.addMarker(userMarker);
-            Log.v("DOG", "Current location: " + latLng.latitude + " Long: " + latLng.longitude);
-        }
-
-
-        updateMapForZip(12120);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-    }
-
-    private void updateMapForZip(int zipcode) {
-
-        ArrayList<myapp> locations = DataService.getInstance().getBootcampLocationWithin10MilesofZip(zipcode);
-
-        for (int x = 0; x < locations.size(); x++) {
-            myapp loc = locations.get(x);
-            MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(), loc.getLongitude()));
-            marker.title(loc.getLocationTitle());
-            marker.snippet(loc.getLocationAddress());
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
-            mMap.addMarker(marker);
-        }
-
-    }
-
     @Override
     public void onLocationChanged(Location location) {
         Log.v("DOG", "Long:" + location.getLongitude() + " - Lat:" + location.getLatitude());
@@ -442,6 +424,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             Log.v("DOG", exception.toString());
         }
     }
+
 
 
 }
