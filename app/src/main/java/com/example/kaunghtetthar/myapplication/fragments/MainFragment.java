@@ -1,11 +1,15 @@
 package com.example.kaunghtetthar.myapplication.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.model.myapp;
@@ -57,25 +61,25 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-//        final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
-//        zipText.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//
-//                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-//
-//                    //You should make sure this is a valid zip code
-//                    String text = zipText.getText().toString();
-//                    int zip = Integer.parseInt(text);
-//
-//                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
-//                    updateMapForZip(zip);
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+        final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
+        zipText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+
+                    //You should make sure this is a valid zip code
+                    String text = zipText.getText().toString();
+                    int zip = Integer.parseInt(text);
+
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
+                    updateMapForZip(zip);
+                    return true;
+                }
+                return false;
+            }
+        });
 
         return view;
     }
