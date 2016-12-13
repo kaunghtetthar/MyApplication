@@ -1,38 +1,34 @@
 package com.example.kaunghtetthar.myapplication.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.kaunghtetthar.myapplication.R;
 
-public class Firstpage extends Activity {
-
-    public Button button;
+public class SignIn extends AppCompatActivity {
 
 
-
+    public Button sign_in;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.first_page);
+        setContentView(R.layout.activity_sign_in);
 
-    button = (Button) findViewById(R.id.button);
+        sign_in = (Button) findViewById(R.id.sign_in);
 
 
-        button.setOnClickListener(new View.OnClickListener() {
+        sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(Firstpage.this,MapsActivity.class);
+                Intent intent = new Intent(SignIn.this,Firstpage.class);
                 startActivity(intent);
 
             }
         });
 
-
     }
-
 }

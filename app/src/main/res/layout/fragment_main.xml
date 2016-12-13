@@ -24,30 +24,66 @@
                 android:layout_marginTop="2dp">
 
 
-                <Button
-                    android:text="Go"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/linearLayout"
-                    android:id="@+id/button2"
-                    android:layout_alignBottom="@+id/linearLayout" />
-
                 <ImageButton
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:src="@drawable/cast_ic_notification_0"
                 android:background="#00000000"/>
 
-            //To enter the zip code
-            <EditText
-                android:id="@+id/zip_text"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:hint="@string/zip_hint"
-                android:inputType="number"/>
+                //To enter the zip code
 
             </LinearLayout>
 
+
+        <EditText
+            android:id="@+id/zip_text"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:hint="@string/zip_hint"
+            android:inputType="number"/>
+
+
+        <Button
+            android:text="Go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/go"
+            android:layout_weight="1"
+            android:layout_marginTop="34dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/go"
+            android:layout_toRightOf="@+id/go"
+            android:layout_toEndOf="@+id/go"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp">
+
+
+            <TextView
+                android:text="Distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/go"
+                android:layout_toRightOf="@+id/go"
+                android:layout_toEndOf="@+id/go"
+                android:id="@+id/distance"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:text="Duration"
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/duration"
+                android:textColor="@color/colorAccent"
+                android:layout_marginLeft="35dp"
+                android:layout_centerHorizontal="true" />
+
+
+        </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -58,6 +94,7 @@
             android:layout_alignParentStart="true">
 
         </FrameLayout>
+
 
     </RelativeLayout>
 
