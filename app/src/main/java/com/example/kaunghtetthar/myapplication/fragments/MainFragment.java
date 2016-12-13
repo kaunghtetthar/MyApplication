@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+<<<<<<< HEAD
 import android.widget.Button;
+=======
+>>>>>>> origin/master
 import android.widget.EditText;
 
 import com.example.kaunghtetthar.myapplication.R;
@@ -33,7 +36,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private MarkerOptions userMarker;
+<<<<<<< HEAD
     private Button go;
+=======
+//    private Button btnFindPath;
+//    private List<Marker> originMarkers = new ArrayList<>();
+//    private List<Marker> destinationMarkers = new ArrayList<>();
+//    private List<Polyline> polylinePaths = new ArrayList<>();
+//    private ProgressDialog progressDialog;
+>>>>>>> origin/master
 
     public MainFragment() {
         // Required empty public constructor
@@ -49,9 +60,20 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+<<<<<<< HEAD
+=======
+       // btnFindPath = (Button) findViewById(R.id.btnFindPath);
+
+//        btnFindPath.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                sendRequest();
+//            }
+//        });
+>>>>>>> origin/master
     }
 
-    @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
@@ -61,8 +83,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
 
-
-
         final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
         zipText.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -70,6 +90,16 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
                 if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
+<<<<<<< HEAD
+        final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
+        zipText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+
+=======
+>>>>>>> origin/master
                     //You should make sure this is a valid zip code
                     String text = zipText.getText().toString();
                     int zip = Integer.parseInt(text);
@@ -87,16 +117,14 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+//
 //        // Add a marker in Sydney, Australia, and move the camera.
 //        LatLng AIT = new LatLng(14.078013, 100.614952);
 //        mMap.addMarker(new MarkerOptions().position(AIT).title("AIT parking space"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(AIT));
-
     }
 
     public void setUserMarker(LatLng latLng) {
@@ -120,10 +148,83 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
             MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(),loc.getLongitude()));
             marker.title(loc.getLocationTitle());
             marker.snippet(loc.getLocationAddress());
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.places_ic_clear));
             mMap.addMarker(marker);
         }
 
     }
+//
+//    private void sendRequest() {
+//        String origin =  mMap.toString();
+//        String destination = mMap.toString();
+//
+//        try {
+//            new DirectionFinder(this, origin, destination).execute();
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @Override
+//    public void onDirectionFinderStart() {
+//        progressDialog = ProgressDialog.show(this, "Please wait.",
+//                "Finding direction..!", true);
+//
+//        if (originMarkers != null) {
+//            for (Marker marker : originMarkers) {
+//                marker.remove();
+//            }
+//        }
+//
+//        if (destinationMarkers != null) {
+//            for (Marker marker : destinationMarkers) {
+//                marker.remove();
+//            }
+//        }
+//
+//        if (polylinePaths != null) {
+//            for (Polyline polyline:polylinePaths ) {
+//                polyline.remove();
+//            }
+//        }
+//    }
+//
+//
+//
+//
+//    @Override
+//    public void onDirectionFinderSuccess(List<Route> routes) {
+//        progressDialog.dismiss();
+//        polylinePaths = new ArrayList<>();
+//        originMarkers = new ArrayList<>();
+//        destinationMarkers = new ArrayList<>();
+//
+//        for (Route route : routes) {
+//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
+//            ((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
+//            ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
+//
+//            originMarkers.add(mMap.addMarker(new MarkerOptions()
+//                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.cast_ic_notification_1))
+//                    .title(route.startAddress)
+//                    .position(route.startLocation)));
+//            destinationMarkers.add(mMap.addMarker(new MarkerOptions()
+//                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.cast_ic_notification_2))
+//                    .title(route.endAddress)
+//                    .position(route.endLocation)));
+//
+//            PolylineOptions polylineOptions = new PolylineOptions().
+//                    geodesic(true).
+//                    color(Color.BLUE).
+//                    width(10);
+//
+//            for (int i = 0; i < route.points.size(); i++)
+//                polylineOptions.add(route.points.get(i));
+//
+//            polylinePaths.add(mMap.addPolyline(polylineOptions));
+//        }
+//    }
+
+
 
 }

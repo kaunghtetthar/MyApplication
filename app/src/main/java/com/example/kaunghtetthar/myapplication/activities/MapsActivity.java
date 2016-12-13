@@ -91,6 +91,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 .addApi(LocationServices.API)
                 .build();
 
+<<<<<<< HEAD
         SupportMapFragment mainFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(map);
         mainFragment.getMapAsync(this);
@@ -343,6 +344,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
             mMap.addMarker(marker);
         }
+=======
+>>>>>>> origin/master
 
     }
 
