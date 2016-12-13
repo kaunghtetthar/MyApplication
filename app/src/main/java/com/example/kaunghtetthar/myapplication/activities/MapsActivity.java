@@ -11,34 +11,40 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.kaunghtetthar.myapplication.MapsDirection.DirectionFinderListener;
-import com.example.kaunghtetthar.myapplication.MapsDirection.Route;
 import com.example.kaunghtetthar.myapplication.R;
-import com.example.kaunghtetthar.myapplication.fragments.MainFragment;
+import com.example.kaunghtetthar.myapplication.model.myapp;
+import com.example.kaunghtetthar.myapplication.services.DataService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapsActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, LocationListener, DirectionFinderListener {
+public class MapsActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener {
 
     final int PERMISSION_LOCATION = 111;
 
     private GoogleApiClient mGoogleApiClient;
-    private MainFragment mainFragment;
+    private MapsActivity mainFragment;
     private Button go;
+    private GoogleMap mMap;
+    private MarkerOptions userMarker;
     private EditText etOrigin;
     private EditText etDestination;
     private List<Marker> originMarkers = new ArrayList<>();
@@ -46,11 +52,19 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
 
+    public MapsActivity() {
+        // Required empty public constructor
+    }
+
+//    public static MapsActivity newInstance() {
+//        MapsActivity fragment = new MapsActivity();
+//        return fragment;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.fragment_main);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
@@ -58,23 +72,13 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 .addApi(LocationServices.API)
                 .build();
 
-        mainFragment = (MainFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.container_main);
 
-        if (mainFragment == null) {
-            mainFragment = MainFragment.newInstance();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.container_main, mainFragment).commit();
-        }
+        SupportMapFragment mainFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mainFragment.getMapAsync(this);
 
-        go = (Button) findViewById(R.id.go);
 
-        go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+
     }
 
 
@@ -97,6 +101,16 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 //        }
 //    }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+//        LatLng AIT = new LatLng(14.078013, 100.614952);
+//        mMap.addMarker(new MarkerOptions().position(AIT).title("AIT parking space"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(AIT));
+
+    }
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -115,10 +129,37 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
     }
 
+    public void setUserMarker(LatLng latLng) {
+        if (userMarker == null) {
+            userMarker = new MarkerOptions().position(latLng).title("Current location");
+            mMap.addMarker(userMarker);
+            Log.v("DOG", "Current location: " + latLng.latitude + " Long: " + latLng.longitude);
+        }
+
+
+        updateMapForZip(12120);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+    }
+
+    private void updateMapForZip(int zipcode) {
+
+        ArrayList<myapp> locations = DataService.getInstance().getBootcampLocationWithin10MilesofZip(zipcode);
+
+        for (int x = 0; x < locations.size(); x++) {
+            myapp loc = locations.get(x);
+            MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(),loc.getLongitude()));
+            marker.title(loc.getLocationTitle());
+            marker.snippet(loc.getLocationAddress());
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
+            mMap.addMarker(marker);
+        }
+
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         Log.v("DOG", "Long:" + location.getLongitude() + " - Lat:" + location.getLatitude());
-        mainFragment.setUserMarker(new LatLng(location.getLatitude(),location.getLongitude()));
+        setUserMarker(new LatLng(location.getLatitude(),location.getLongitude()));
 
     }
 
@@ -126,6 +167,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     public void onConnectionSuspended(int i) {
 
     }
+
     @Override
     protected void onStart() {
         mGoogleApiClient.connect();
@@ -170,32 +212,33 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     }
 
 
-    @Override
-    public void onDirectionFinderStart() {
-        progressDialog = ProgressDialog.show(this, "Please wait.",
-                "Finding direction..!", true);
+//    @Override
+//    public void onDirectionFinderStart() {
+//        progressDialog = ProgressDialog.show(this, "Please wait.",
+//                "Finding direction..!", true);
+//
+//        if (originMarkers != null) {
+//            for (Marker marker : originMarkers) {
+//                marker.remove();
+//            }
+//        }
+//
+//        if (destinationMarkers != null) {
+//            for (Marker marker : destinationMarkers) {
+//                marker.remove();
+//            }
+//        }
+//
+//        if (polylinePaths != null) {
+//            for (Polyline polyline:polylinePaths ) {
+//                polyline.remove();
+//            }
+//        }
+//    }
 
-        if (originMarkers != null) {
-            for (Marker marker : originMarkers) {
-                marker.remove();
-            }
-        }
+//    @Override
+//    public void onDirectionFinderSuccess(List<Route> route) {
+//
+//    }
 
-        if (destinationMarkers != null) {
-            for (Marker marker : destinationMarkers) {
-                marker.remove();
-            }
-        }
-
-        if (polylinePaths != null) {
-            for (Polyline polyline:polylinePaths ) {
-                polyline.remove();
-            }
-        }
-    }
-
-    @Override
-    public void onDirectionFinderSuccess(List<Route> route) {
-
-    }
 }
