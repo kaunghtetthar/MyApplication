@@ -20,9 +20,8 @@ public class DataService {
 
     public ArrayList<myapp> getBootcampLocationWithin10MilesofZip(int zipcode) {
         //pretending we are downloading data from the server
-
         ArrayList<myapp> list = new ArrayList<>();
-        list.add(new myapp(14.078040f, 100.614946f, "On the Campus",  "AIT car parking", "slo"));
+        list.add(new myapp(14.078040f, 100.614946f, "On the Campus : " ,  "AIT car parking", "car_icon"));
         return list;
     }
 }
