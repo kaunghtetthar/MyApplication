@@ -22,6 +22,7 @@ public class DataService {
         //pretending we are downloading data from the server
         ArrayList<myapp> list = new ArrayList<>();
         list.add(new myapp(14.078040f, 100.614946f, "On the Campus : " ,  "AIT car parking", "car_icon"));
+        list.add(new myapp(14.080393f, 100.612730f, "On the Campus : " ,  "CSIM car parking", "car_icon"));
         return list;
     }
 }

@@ -2,6 +2,7 @@ package com.example.kaunghtetthar.myapplication.activities;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -17,6 +18,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.locationroutedirectionmapv2.DirectionsJSONParser;
@@ -53,7 +56,8 @@ import java.util.List;
 import static com.example.kaunghtetthar.myapplication.R.id.map;
 
 
-public class MapsActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener {
+public class MapsActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener,
+        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener {
 
     final int PERMISSION_LOCATION = 111;
 
@@ -69,6 +73,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
+    TextView distance1;
+    TextView duration1;
+    public Button send;
 
     public MapsActivity() {
         // Required empty public constructor
@@ -84,7 +91,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_main);
         // Initializing
-        markerPoints = new ArrayList<LatLng>();
+        distance1 = (TextView) findViewById(R.id.distance1);
+        duration1 = (TextView) findViewById(R.id.duration1);
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addConnectionCallbacks(this)
@@ -96,17 +105,25 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         mainFragment.getMapAsync(this);
 
 
-
-
         go = (Button) findViewById(R.id.go);
+
+        send = (Button) findViewById(R.id.send);
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MapsActivity.this,Restful.class);
+                startActivity(intent);
+
+            }
+        });
 
             go.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onMapClick();
+                    onMapPolyline();
                 }
-//        });          map.setOnMapClickListener(new OnMapClickListener() {
-
 
 
         });
@@ -115,7 +132,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
     }
 
-    public void onMapClick() {
+    public void onMapPolyline() {
 
         ArrayList<myapp> locations = DataService.getInstance().getBootcampLocationWithin10MilesofZip(12120);
 
@@ -123,19 +140,22 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(), loc.getLongitude()));
 
         // Checks, whether start and end locations are captured
-            LatLng latLng = userMarker.getPosition();
-            LatLng dest = marker.getPosition();
+        LatLng latLng = userMarker.getPosition();
+        LatLng dest = marker.getPosition();
 
-            // Getting URL to the Google Directions API
-            String url = getDirectionsUrl(latLng, dest);
+        // Getting URL to the Google Directions API
+        String url = getDirectionsUrl(latLng, dest);
 
-            DownloadTask downloadTask = new DownloadTask();
+        DownloadTask downloadTask = new DownloadTask();
 
-            // Start downloading json data from Google Directions API
-            downloadTask.execute(url);
+        // Start downloading json data from Google Directions API
+        downloadTask.execute(url);
 
 
     }
+
+
+
 
     public void setUserMarker(LatLng latLng) {
         if (userMarker == null) {
@@ -163,7 +183,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         }
 
     }
-
 
 
     private String getDirectionsUrl(LatLng latLng,LatLng dest){
@@ -288,6 +307,13 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             ArrayList<LatLng> points = null;
             PolylineOptions lineOptions = null;
             MarkerOptions markerOptions = new MarkerOptions();
+            String distance = "";
+            String duration = "";
+
+            if(result.size()<1){
+                Toast.makeText(getBaseContext(), "No Points", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             // Traversing through all the routes
             for(int i=0;i<result.size();i++){
@@ -301,6 +327,14 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 for(int j=0;j<path.size();j++){
                     HashMap<String,String> point = path.get(j);
 
+                    if(j==0){    // Get distance from the list
+                        distance = (String)point.get("distance");
+                        continue;
+                    }else if(j==1){ // Get duration from the list
+                        duration = (String)point.get("duration");
+                        continue;
+                    }
+
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
                     LatLng position = new LatLng(lat, lng);
@@ -313,6 +347,13 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 lineOptions.width(2);
                 lineOptions.color(Color.RED);
             }
+
+
+            distance1.setText("Distance:"+distance);
+            duration1.setText("Duration" + duration);
+
+
+
 
             // Drawing polyline in the Google Map for the i-th route
             mMap.addPolyline(lineOptions);
@@ -340,21 +381,22 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
-//        mMap.setMyLocationEnabled(true);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
 
-//        LatLng AIT = new LatLng(14.078013, 100.614952);
-//        mMap.addMarker(new MarkerOptions().position(AIT).title("AIT parking space"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(AIT));
+        LatLng AIT = new LatLng(14.078013, 100.614952);
+        mMap.addMarker(new MarkerOptions().position(AIT).title("AIT parking space"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(AIT));
 
     }
 
@@ -424,7 +466,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             Log.v("DOG", exception.toString());
         }
     }
-
 
 
 }

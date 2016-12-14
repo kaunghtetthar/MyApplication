@@ -23,6 +23,8 @@ public class DirectionsJSONParser {
         JSONArray jRoutes = null;
         JSONArray jLegs = null;
         JSONArray jSteps = null;
+        JSONObject jDistance = null;
+        JSONObject jDuration = null;
 
         try {
 
@@ -31,10 +33,28 @@ public class DirectionsJSONParser {
             /** Traversing all routes */
             for(int i=0;i<jRoutes.length();i++){
                 jLegs = ( (JSONObject)jRoutes.get(i)).getJSONArray("legs");
-                List path = new ArrayList<HashMap<String, String>>();
+
+                List<HashMap<String, String>> path = new ArrayList<HashMap<String, String>>();
 
                 /** Traversing all legs */
                 for(int j=0;j<jLegs.length();j++){
+
+                    /** Getting distance from the json data */
+                    jDistance = ((JSONObject) jLegs.get(j)).getJSONObject("distance");
+                    HashMap<String, String> hmDistance = new HashMap<String, String>();
+                    hmDistance.put("distance", jDistance.getString("text"));
+
+                    /** Getting duration from the json data */
+                    jDuration = ((JSONObject) jLegs.get(j)).getJSONObject("duration");
+                    HashMap<String, String> hmDuration = new HashMap<String, String>();
+                    hmDuration.put("duration", jDuration.getString("text"));
+
+                    /** Adding distance object to the path */
+                    path.add(hmDistance);
+
+                    /** Adding duration object to the path */
+                    path.add(hmDuration);
+
                     jSteps = ( (JSONObject)jLegs.get(j)).getJSONArray("steps");
 
                     /** Traversing all steps */
@@ -51,20 +71,19 @@ public class DirectionsJSONParser {
                             path.add(hm);
                         }
                     }
-                    routes.add(path);
                 }
+                routes.add(path);
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }catch (Exception e){
         }
-
         return routes;
     }
+
     /**
      * Method to decode polyline points
-     * Courtesy : http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
+     * Courtesy : jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
      * */
     private List<LatLng> decodePoly(String encoded) {
 
@@ -96,7 +115,6 @@ public class DirectionsJSONParser {
                     (((double) lng / 1E5)));
             poly.add(p);
         }
-
         return poly;
     }
 }
