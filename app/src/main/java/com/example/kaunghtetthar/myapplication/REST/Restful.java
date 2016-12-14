@@ -1,4 +1,4 @@
-package com.example.kaunghtetthar.myapplication.activities;
+package com.example.kaunghtetthar.myapplication.REST;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -48,7 +48,7 @@ public class Restful extends Activity {
             public void onClick(View arg0) {
 
                 // WebServer Request URL
-                String serverURL = "http://androidexample.com/media/webservice/JsonReturn.php";
+                String serverURL = "https://web3.cs.ait.ac.th/sites";
 
                 // Use AsyncTask execute Method To Prevent ANR Problem
                 new LongOperation().execute(serverURL);
@@ -159,7 +159,9 @@ public class Restful extends Activity {
 
                 uiUpdate.setText("Output : "+ Error);
 
-            } else {
+            }
+
+            else {
 
                 // Show Response Json On Screen (activity)
                 uiUpdate.setText( Content );
@@ -168,7 +170,7 @@ public class Restful extends Activity {
 
                 String OutputData = "";
                 JSONObject jsonResponse;
-
+//
                 try {
 
                     /****** Creates a new JSONObject with name/value mappings from the JSON string. ********/
@@ -182,25 +184,25 @@ public class Restful extends Activity {
 
                     int lengthJsonArr = jsonMainNode.length();
 
-                    for(int i=0; i < lengthJsonArr; i++)
-                    {
-                        /****** Get Object for each JSON node.***********/
-                        JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
-
-                        /******* Fetch node values **********/
-                        String name       = jsonChildNode.optString("name").toString();
-                        String number     = jsonChildNode.optString("number").toString();
-                        String date_added = jsonChildNode.optString("date_added").toString();
-
-
-                        OutputData += " Name 		    : "+ name +" \n "
-                                + "Number 		: "+ number +" \n "
-                                + "Time 				: "+ date_added +" \n "
-                                +"--------------------------------------------------\n";
-
-                        //Log.i("JSON parse", song_name);
-                    }
-                    /****************** End Parse Response JSON Data *************/
+//                    for(int i=0; i < lengthJsonArr; i++)
+//                    {
+//                        /****** Get Object for each JSON node.***********/
+//                        JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+//
+//                        /******* Fetch node values **********/
+//                        String name       = jsonChildNode.optString("name").toString();
+//                        String number     = jsonChildNode.optString("number").toString();
+//                        String date_added = jsonChildNode.optString("date_added").toString();
+//
+//
+//                        OutputData += " Name 		    : "+ name +" \n "
+//                                + "Number 		: "+ number +" \n "
+//                                + "Time 				: "+ date_added +" \n "
+//                                +"--------------------------------------------------\n";
+//
+//                        //Log.i("JSON parse", song_name);
+//                    }
+//                    /****************** End Parse Response JSON Data *************/
 
                     //Show Parsed Output on screen (activity)
                     jsonParsed.setText( OutputData );
