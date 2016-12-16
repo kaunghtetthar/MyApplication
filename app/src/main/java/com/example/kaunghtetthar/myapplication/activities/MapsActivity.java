@@ -54,7 +54,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.example.kaunghtetthar.myapplication.R.id.map;
+import static com.example.kaunghtetthar.myapplication.R.id.sign_in;
 
 
 public class MapsActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener,
@@ -102,7 +102,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 .build();
 
         SupportMapFragment mainFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(map);
+                .findFragmentById(sign_in);
         mainFragment.getMapAsync(this);
 
 

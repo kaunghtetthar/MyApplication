@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +49,7 @@ public class Restful extends Activity {
             public void onClick(View arg0) {
 
                 // WebServer Request URL
-                String serverURL = "https://web3.cs.ait.ac.th/user/sign_in";
+                String serverURL = "https://web3.cs.ait.ac.th/parkingtotals/1.json";
 
                 // Use AsyncTask execute Method To Prevent ANR Problem
                 new LongOperation().execute(serverURL);
@@ -106,6 +107,7 @@ public class Restful extends Activity {
                 // Defined URL  where to send data
                 URL url = new URL(urls[0]);
 
+
                 // Send POST data request
 
                 URLConnection conn = url.openConnection();
@@ -113,6 +115,8 @@ public class Restful extends Activity {
                 OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
                 wr.write( data );
                 wr.flush();
+
+
 
                 // Get the server response
 
@@ -125,10 +129,12 @@ public class Restful extends Activity {
                 {
                     // Append server response in string
                     sb.append(line + "\n");
+
                 }
 
                 // Append Server Response To Content String
                 Content = sb.toString();
+
                 //text.setText(new StringBuilder().toString());
             }
             catch(Exception ex)
@@ -185,28 +191,30 @@ public class Restful extends Activity {
 
                     int lengthJsonArr = jsonMainNode.length();
 
-//                    for(int i=0; i < lengthJsonArr; i++)
-//                    {
-//                        /****** Get Object for each JSON node.***********/
-//                        JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
-//
-//                        /******* Fetch node values **********/
-//                        String name       = jsonChildNode.optString("name").toString();
-//                        String number     = jsonChildNode.optString("number").toString();
-//                        String date_added = jsonChildNode.optString("date_added").toString();
-//
-//
-//                        OutputData += " Name 		    : "+ name +" \n "
-//                                + "Number 		: "+ number +" \n "
-//                                + "Time 				: "+ date_added +" \n "
-//                                +"--------------------------------------------------\n";
-//
-//                        //Log.i("JSON parse", song_name);
-//                    }
-//                    /****************** End Parse Response JSON Data *************/
+                    for(int i=0; i < lengthJsonArr; i++)
+                    {
+                        /****** Get Object for each JSON node.***********/
+                        JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+
+                        /******* Fetch node values **********/
+                        String name       = jsonChildNode.optString("id").toString();
+                        String number     = jsonChildNode.optString("url").toString();
+                        String date_added = jsonChildNode.optString("free").toString();
+
+
+                        OutputData += " id	    : "+ name +" \n "
+                                + "url 		: "+ number +" \n "
+                                + "free 				: "+ date_added +" \n "
+                                +"--------------------------------------------------\n";
+
+                        //Log.i("JSON parse", song_name);
+                    }
+                    /****************** End Parse Response JSON Data *************/
 
                     //Show Parsed Output on screen (activity)
                     jsonParsed.setText( OutputData );
+
+                    Log.v("FUN" , "Parsed :" + OutputData);
 
 
                 } catch (JSONException e) {

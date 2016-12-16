@@ -8,65 +8,19 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.kaunghtetthar.myapplication.activities.SignIn">
+    tools:context="com.example.kaunghtetthar.myapplication.activities.Firstpage">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Password"
-        android:ems="10"
-        android:id="@+id/editText2"
-        android:layout_marginTop="23dp"
-        android:layout_below="@+id/editText"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="48dp"
-        android:layout_marginEnd="48dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="User"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_alignStart="@+id/editText2"
-        android:layout_marginTop="11dp" />
 
     <Button
-        android:text="Sign In"
+        android:text="Map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/sign_in"
+        android:id="@+id/find_map"
         android:layout_marginTop="50dp"
-        android:layout_below="@+id/editText2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="30dp"
         android:layout_marginStart="30dp" />
-
-    <Button
-        android:text="REST"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rest"
-        android:layout_alignTop="@+id/sign_in"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:text="Json"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/json"
-        android:layout_alignBaseline="@+id/rest"
-        android:layout_alignBottom="@+id/rest"
-        android:layout_toRightOf="@+id/rest"
-        android:layout_toEndOf="@+id/rest"
-        android:layout_marginLeft="21dp"
-        android:layout_marginStart="21dp" />
 
     <Button
         android:text="Weather"
@@ -74,19 +28,46 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
         android:id="@+id/weather"
-        android:layout_below="@+id/sign_in"
+        android:layout_below="@+id/find_map"
         android:layout_toLeftOf="@+id/rest"
         android:layout_toStartOf="@+id/rest" />
+
+    <Button
+        android:text="Json"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/json"
+        android:layout_below="@+id/weather"
+        android:layout_alignLeft="@+id/weather"
+        android:layout_alignStart="@+id/weather"
+        android:layout_marginTop="29dp" />
+
+    <Button
+        android:text="REST"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rest"
+        android:layout_above="@+id/weather"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="33dp"
+        android:layout_marginEnd="33dp" />
+
+    <Button
+        android:text="Sign In"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/find_map"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/sign_in" />
 
     <Button
         android:text="CarParkingJson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/carparking"
         android:layout_alignTop="@+id/weather"
-        android:layout_toRightOf="@+id/weather"
-        android:layout_toEndOf="@+id/weather"
-        android:layout_marginLeft="14dp"
-        android:layout_marginStart="14dp"
-        android:id="@+id/carparking" />
+        android:layout_toLeftOf="@+id/sign_in"
+        android:layout_toStartOf="@+id/sign_in" />
 
 </RelativeLayout>
