@@ -70,7 +70,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".WeatherActivity">
+        <activity android:name=".Weather.WeatherActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".CarParking.CarParkingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

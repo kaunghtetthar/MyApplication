@@ -48,7 +48,7 @@ public class Restful extends Activity {
             public void onClick(View arg0) {
 
                 // WebServer Request URL
-                String serverURL = "https://web3.cs.ait.ac.th/sites";
+                String serverURL = "https://web3.cs.ait.ac.th/user/sign_in";
 
                 // Use AsyncTask execute Method To Prevent ANR Problem
                 new LongOperation().execute(serverURL);
@@ -129,6 +129,7 @@ public class Restful extends Activity {
 
                 // Append Server Response To Content String
                 Content = sb.toString();
+                //text.setText(new StringBuilder().toString());
             }
             catch(Exception ex)
             {

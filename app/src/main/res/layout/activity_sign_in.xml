@@ -72,10 +72,21 @@
         android:text="Weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rest"
-        android:layout_toLeftOf="@+id/json"
-        android:layout_toStartOf="@+id/json"
-        android:layout_marginTop="31dp"
-        android:id="@+id/weather" />
+        android:layout_marginTop="35dp"
+        android:id="@+id/weather"
+        android:layout_below="@+id/sign_in"
+        android:layout_toLeftOf="@+id/rest"
+        android:layout_toStartOf="@+id/rest" />
+
+    <Button
+        android:text="CarParkingJson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/weather"
+        android:layout_toRightOf="@+id/weather"
+        android:layout_toEndOf="@+id/weather"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:id="@+id/carparking" />
 
 </RelativeLayout>
