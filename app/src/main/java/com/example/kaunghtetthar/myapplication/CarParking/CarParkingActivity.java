@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,6 +17,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kaunghtetthar.myapplication.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -33,7 +34,8 @@ public class CarParkingActivity extends AppCompatActivity {
     private StringRequest request;
     private RequestQueue requestQueue;
     private EditText username, password;
-
+    private static String Username = "dev";
+    private static String Password = "devdev";
 
 
 
@@ -76,11 +78,24 @@ public class CarParkingActivity extends AppCompatActivity {
 
         Log.v("FUN2", url.toString());
 
-        JSONObject params = new JSONObject();
 
-        final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, params, new Response.Listener<JSONObject>() {
+        final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+
+                String final1 = response.toString();
+
+                try {
+                    JSONObject params = new JSONObject(final1);
+                    int parentArray = params.getInt("id");
+
+                    Log.v("FUN3" , "id :" + parentArray);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
 
                 String list = response.toString();
@@ -116,28 +131,54 @@ public class CarParkingActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(JSONObject response) {
 
+                    final JSONObject root = new JSONObject();
+                    JSONObject root1 = new JSONObject();
 
-                    String list = response.toString();
+                    try {
 
-                    tvsite.setText(list);
+                        JSONObject parrentArray = root1.getJSONObject("id");
+                        String list = parrentArray.toString();
 
+                        tvsite.setText(list);
+                        Log.v("FUN3", "Err: " + list);
 
+                        if (list != null) {
+                            try {
+                                JSONArray parentArray = root.getJSONArray("error");
+                                String error = parentArray.toString();
+                                Log.v("FUN3", "Error: " + error);
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.v("FUN3", "Err: " + error.getLocalizedMessage());
                 }
-            }){
-                @Override
-                public Map<String, String> getParams() throws AuthFailureError {
-                    HashMap<String, String> params = new HashMap<String, String>();
-                    params.put("user_username", username.getText().toString());
-                    params.put("user_password", password.getText().toString());
-                    return params;
-                }
+            })
+            {
+
+                public Map<String, String> getParams () {
+                HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("username" , Username);
+                    params.put("password" , Password);
+                return params;
+
+            }
             };
+
+
+
+            Volley.newRequestQueue(this).add(jsonRequest);
+
 
 //            request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 //                @Override
@@ -190,7 +231,8 @@ public class CarParkingActivity extends AppCompatActivity {
 //
 //
 //                  Volley.newRequestQueue(this).add(jsonRequest);
-            Volley.newRequestQueue(this).add(jsonRequest);
+
+
 
 //
 //
@@ -202,6 +244,25 @@ public class CarParkingActivity extends AppCompatActivity {
 
 
     }
+
+//            {
+//                @Override
+//                public Map<String, String> getHeaders() throws AuthFailureError {
+//                    HashMap<String, String> params = new HashMap<String, String>();
+//                    params.put("username", username.getText().toString());
+//                    params.put("password", password.getText().toString());
+//                    params.put("Content type", "application/x-www-form-urlencoded");
+//                    return params;
+//                }
+//            };
+//            {
+//                @Override
+//                public Map<String, String> getHeaders() throws AuthFailureError {
+//                    HashMap<String, String> params = new HashMap<String, String>();
+//                    params.put("Content-Type", "application/x-www-form-urlencoded");
+//                    return params;
+//                }
+//            };
 
 
 

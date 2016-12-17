@@ -49,7 +49,8 @@ public class Restful extends Activity {
             public void onClick(View arg0) {
 
                 // WebServer Request URL
-                String serverURL = "https://web3.cs.ait.ac.th/parkingtotals/1.json";
+//                String serverURL = "http://androidexample.com/media/webservice/JsonReturn.php";
+                String serverURL = "https://web3.cs.ait.ac.th/sites/1.json";
 
                 // Use AsyncTask execute Method To Prevent ANR Problem
                 new LongOperation().execute(serverURL);
@@ -185,7 +186,7 @@ public class Restful extends Activity {
 
                     /***** Returns the value mapped by name if it exists and is a JSONArray. ***/
                     /*******  Returns null otherwise.  *******/
-                    JSONArray jsonMainNode = jsonResponse.optJSONArray("Android");
+                    JSONArray jsonMainNode = jsonResponse.optJSONArray(Content);
 
                     /*********** Process each JSON Node ************/
 
