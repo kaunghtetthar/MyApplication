@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,7 +18,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kaunghtetthar.myapplication.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,6 +36,7 @@ public class CarParkingActivity extends AppCompatActivity {
     private EditText username, password;
     private static String Username = "dev";
     private static String Password = "devdev";
+
 
 
 
@@ -113,68 +114,51 @@ public class CarParkingActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(jsonRequest);
 
-
-
     }
 
         public void jsonsignin() {
 
-            final String url = URL_BASE + paths.URL_SITES + URL_JSON;
+
+
+            final String url = URL_BASE + paths.URL_SITES + URL_JSON ;
 
             tvsite = (TextView) findViewById(R.id.tvsite);
 
-            JSONObject params = new JSONObject();
 
 
-
-            final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
 
-                    final JSONObject root = new JSONObject();
-                    JSONObject root1 = new JSONObject();
-
-                    try {
-
-                        JSONObject parrentArray = root1.getJSONObject("id");
-                        String list = parrentArray.toString();
-
-                        tvsite.setText(list);
-                        Log.v("FUN3", "Err: " + list);
-
-                        if (list != null) {
-                            try {
-                                JSONArray parentArray = root.getJSONArray("error");
-                                String error = parentArray.toString();
-                                Log.v("FUN3", "Error: " + error);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-
-                            }
-
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
                 }
             }, new Response.ErrorListener() {
+
+
                 @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.v("FUN3", "Err: " + error.getLocalizedMessage());
+                public void onErrorResponse(VolleyError volleyError) {
+
+                        Log.v("FUN31", "Err: " + volleyError.getLocalizedMessage());
+                    }
+
+            }){
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> header = new HashMap<String, String>();
+                    header.put("Content-Type","application/json");
+
+                    return header;
+
                 }
-            })
-            {
 
-                public Map<String, String> getParams () {
-                HashMap<String, String> params = new HashMap<String, String>();
-                    params.put("username" , Username);
-                    params.put("password" , Password);
-                return params;
-
-            }
+                protected Map<String, String> getParams()
+                        throws com.android.volley.AuthFailureError {
+                    Map params = new HashMap<String, String>();
+                    params.put("username", Username);
+                    params.put("password", Password);
+                    return params;
+                };
             };
-
 
 
             Volley.newRequestQueue(this).add(jsonRequest);
@@ -234,13 +218,52 @@ public class CarParkingActivity extends AppCompatActivity {
 
 
 
-//
+
 //
 //
         }
 
 
+    public void site() {
 
+        final String url = URL_BASE + paths.URL_SITES + URL_JSON;
+
+        final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                String final1 = response.toString();
+
+                try {
+                    JSONObject params = new JSONObject(final1);
+                    int parentArray = params.getInt("id");
+
+                    Log.v("FUN3" , "id :" + parentArray);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                String list = response.toString();
+
+                tvjson.setText(list);
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.v("FUN", "Err: " + error.getLocalizedMessage());
+            }
+        });
+
+        Volley.newRequestQueue(this).add(jsonRequest);
+
+
+    }
 
 
     }

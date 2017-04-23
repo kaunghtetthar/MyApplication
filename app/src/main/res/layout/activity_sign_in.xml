@@ -70,4 +70,23 @@
         android:layout_toLeftOf="@+id/sign_in"
         android:layout_toStartOf="@+id/sign_in" />
 
+    <Button
+        android:text="stream"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/find_map"
+        android:layout_alignStart="@+id/find_map"
+        android:id="@+id/streaming" />
+
+    <Button
+        android:id="@+id/vlc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="vlc"
+        android:layout_below="@+id/streaming"
+        android:layout_alignLeft="@+id/streaming"
+        android:layout_alignStart="@+id/streaming"
+        android:layout_marginTop="23dp" />
+
 </RelativeLayout>

@@ -34,6 +34,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private MarkerOptions userMarker;
     private Button go;
+    private parking_list mListFragment;
 
     public MainFragment() {
         // Required empty public constructor
@@ -60,7 +61,13 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
                 .findFragmentById(R.id.sign_in);
         mapFragment.getMapAsync(this);
 
+        mListFragment = (parking_list)getActivity().getSupportFragmentManager().findFragmentById(R.id.container_locations_list);
 
+        if (mListFragment == null) {
+            mListFragment = parking_list.newInstance();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container_locations_list, mListFragment).commit();
+        }
 
 
         final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
@@ -76,6 +83,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
                     InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
+                    showList();
                     updateMapForZip(zip);
                     return true;
                 }
@@ -83,6 +91,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        hideList();
         return view;
     }
 
@@ -123,6 +132,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
             mMap.addMarker(marker);
         }
+
+    }
+
+    private void hideList() {
+        getActivity().getSupportFragmentManager().beginTransaction().hide(mListFragment).commit();
+    }
+
+    private void showList() {
+        getActivity().getSupportFragmentManager().beginTransaction().show(mListFragment).commit();
 
     }
 

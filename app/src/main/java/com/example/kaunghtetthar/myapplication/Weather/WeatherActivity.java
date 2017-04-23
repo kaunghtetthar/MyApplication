@@ -1,7 +1,7 @@
 package com.example.kaunghtetthar.myapplication.Weather;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.android.volley.Request;

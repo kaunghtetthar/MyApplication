@@ -2,9 +2,13 @@ package com.example.kaunghtetthar.myapplication.activities;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Intent;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.hardware.GeomagneticField;
+import android.hardware.SensorManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,15 +18,19 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kaunghtetthar.myapplication.R;
-import com.example.kaunghtetthar.myapplication.REST.Restful;
+import com.example.kaunghtetthar.myapplication.fragments.parking_list;
+import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
 import com.example.kaunghtetthar.myapplication.locationroutedirectionmapv2.DirectionsJSONParser;
 import com.example.kaunghtetthar.myapplication.model.myapp;
 import com.example.kaunghtetthar.myapplication.services.DataService;
@@ -36,6 +44,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -53,20 +62,25 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.kaunghtetthar.myapplication.R.id.sign_in;
 
 
 public class MapsActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener,
-        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener {
+        OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener,GoogleApiClient.ConnectionCallbacks, LocationListener {
 
     final int PERMISSION_LOCATION = 111;
 
     private GoogleApiClient mGoogleApiClient;
     private MapsActivity mainFragment;
+    private float[] mRotationMatrix = new float[16];
     private Button go;
     private GoogleMap mMap;
+    boolean markerClicked;
     private MarkerOptions userMarker;
+    private Marker mSelectedMarker;
+    float mDeclination;
     private EditText etOrigin;
     private EditText etDestination;
     ArrayList<LatLng> markerPoints;
@@ -75,8 +89,18 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
     TextView distance1;
+//    private SensorManager mSensorManager;
     TextView duration1;
     public Button send;
+    private parking_list mListFragment;
+    private parkingstreaming mStreaming;
+
+    // record the compass picture angle turned
+    private float currentDegree = 0f;
+
+    // device sensor manager
+    private SensorManager mSensorManager;
+
 
     public MapsActivity() {
         // Required empty public constructor
@@ -91,6 +115,12 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_main);
+
+        Bundle bundle = getIntent().getParcelableExtra("go");
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+
         // Initializing
         distance1 = (TextView) findViewById(R.id.distance1);
         duration1 = (TextView) findViewById(R.id.duration1);
@@ -105,6 +135,37 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 .findFragmentById(sign_in);
         mainFragment.getMapAsync(this);
 
+        mListFragment = (parking_list) getSupportFragmentManager().findFragmentById(R.id.container_locations_list);
+
+        if (mListFragment == null) {
+            mListFragment = parking_list.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container_locations_list, mListFragment).commit();
+        }
+
+        final EditText zipText = (EditText) findViewById(R.id.zip_text);
+        zipText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+
+                    //You should make sure this is a valid zip code
+                    String text = zipText.getText().toString();
+                    int zip = Integer.parseInt(text);
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
+                    showList();
+                    updateMapForZip(zip);
+                    return true;
+                }
+                hidekeyboard();
+             return false;
+            }
+
+        });
+
 
         go = (Button) findViewById(R.id.go);
 
@@ -114,35 +175,70 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MapsActivity.this,Restful.class);
-                startActivity(intent);
+                showList();
+                hidekeyboard();
 
             }
         });
 
-            go.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onMapPolyline();
-                }
+        if (bundle != null) {
+
+                Thread timer = new Thread() {
+
+                    public void run() {
+                        try {
+                            sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } finally {
+                            onMapPolyline();
+                            hidekeyboard();
+
+                        }
+                    }
+                };
+                timer.start();
+            } else {
+
+            }
+
+
+//        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+
+
+
+
+        go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMapPolyline();
+            }
 
 
         });
 
-
-
+        hideList();
     }
+
 
     public void onMapPolyline() {
 
-        ArrayList<myapp> locations = DataService.getInstance().getBootcampLocationWithin10MilesofZip(12120);
+        final ArrayList<myapp> locations = DataService.getInstance().getBootcampLocationWithin10MilesofZip(12120);
 
-        myapp loc = locations.get(0);
-        MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(), loc.getLongitude()));
+        Bundle bundle =  getIntent().getParcelableExtra("go");
+        LatLng godrive = bundle.getParcelable("LatLng");
+
+
+//        myapp loc = locations.get(go);
+//
+//        MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(), loc.getLongitude()));
+
+
 
         // Checks, whether start and end locations are captured
         LatLng latLng = userMarker.getPosition();
-        LatLng dest = marker.getPosition();
+        LatLng dest = godrive;
 
         // Getting URL to the Google Directions API
         String url = getDirectionsUrl(latLng, dest);
@@ -151,6 +247,36 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
         // Start downloading json data from Google Directions API
         downloadTask.execute(url);
+
+    }
+
+
+    // Compare Marker variable instead of MyMarker
+    @Override
+    public boolean equals(Object o) {
+        return o != null && o.equals(mSelectedMarker);
+    }
+
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+        if (null != mSelectedMarker) {
+
+
+            }
+
+
+        mSelectedMarker = marker;
+        mSelectedMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
+        return false;
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+
+        hidekeyboard();
+        hideList();
 
 
     }
@@ -162,9 +288,20 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         if (userMarker == null) {
             userMarker = new MarkerOptions().position(latLng).title("Current location : " + latLng.latitude + "," + latLng.longitude);
             mMap.addMarker(userMarker);
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
             Log.v("DOG", "Current location: " + latLng.latitude + " Long: " + latLng.longitude);
         }
 
+        try {
+
+            Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            int zip = Integer.parseInt(addresses.get(0).getPostalCode());
+            updateMapForZip(zip);
+        } catch (IOException exception) {
+
+        }
 
         updateMapForZip(12120);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
@@ -248,6 +385,57 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         return data;
     }
 
+//    @Override
+//    public void onSensorChanged(SensorEvent event) {
+//
+////        if(event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
+////            SensorManager.getRotationMatrixFromVector(
+////                    mRotationMatrix , event.values);
+////            float[] orientation = new float[3];
+////            SensorManager.getOrientation(mRotationMatrix, orientation);
+////            float bearing = (float) (Math.toDegrees(orientation[0]) + mDeclination);
+////            updateCamera(bearing);
+////        }
+//
+//        float degree = Math.round(event.values[0]);
+//        RotateAnimation ra = new RotateAnimation(currentDegree,
+//                -degree, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+//
+//        ra.setDuration(210);
+//
+//        ra.setFillAfter(true);
+//
+//       mMap.animateCamera(CameraUpdateFactory.newCameraPosition(ra));
+//
+//        currentDegree = -degree;
+//
+//
+//
+//
+//    }
+
+    private void updateCamera(float bearing) {
+        CameraPosition oldPos = mMap.getCameraPosition();
+        CameraPosition pos = CameraPosition.builder(oldPos).bearing(bearing).build();
+        GoogleMap.CancelableCallback callback = new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        };
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(pos), 24, callback);
+    }
+
+//    @Override
+//    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//
+//    }
+
     // Fetches data from url passed
     private class DownloadTask extends AsyncTask<String, Void, String>{
 
@@ -307,59 +495,68 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
             ArrayList<LatLng> points = null;
             PolylineOptions lineOptions = null;
-            MarkerOptions markerOptions = new MarkerOptions();
-            String distance = "";
-            String duration = "";
 
-            if(result.size()<1){
-                Toast.makeText(getBaseContext(), "No Points", Toast.LENGTH_SHORT).show();
-                return;
-            }
+                MarkerOptions markerOptions = new MarkerOptions();
+                String distance = "";
+                String duration = "";
 
-            // Traversing through all the routes
-            for(int i=0;i<result.size();i++){
-                points = new ArrayList<LatLng>();
-                lineOptions = new PolylineOptions();
-
-                // Fetching i-th route
-                List<HashMap<String, String>> path = result.get(i);
-
-                // Fetching all the points in i-th route
-                for(int j=0;j<path.size();j++){
-                    HashMap<String,String> point = path.get(j);
-
-                    if(j==0){    // Get distance from the list
-                        distance = (String)point.get("distance");
-                        continue;
-                    }else if(j==1){ // Get duration from the list
-                        duration = (String)point.get("duration");
-                        continue;
-                    }
-
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    LatLng position = new LatLng(lat, lng);
-
-                    points.add(position);
+                if (result.size() < 1) {
+                    Toast.makeText(getBaseContext(), "No Points", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
-                // Adding all the points in the route to LineOptions
-                lineOptions.addAll(points);
-                lineOptions.width(2);
-                lineOptions.color(Color.RED);
+                // Traversing through all the routes
+                for (int i = 0; i < result.size(); i++) {
+                    points = new ArrayList<LatLng>();
+                    lineOptions = new PolylineOptions();
+
+                    // Fetching i-th route
+                    List<HashMap<String, String>> path = result.get(i);
+
+                    // Fetching all the points in i-th route
+                    for (int j = 0; j < path.size(); j++) {
+                        HashMap<String, String> point = path.get(j);
+
+                        if (j == 0) {    // Get distance from the list
+                            distance = (String) point.get("distance");
+                            continue;
+                        } else if (j == 1) { // Get duration from the list
+                            duration = (String) point.get("duration");
+                            continue;
+                        }
+
+                        double lat = Double.parseDouble(point.get("lat"));
+                        double lng = Double.parseDouble(point.get("lng"));
+                        LatLng position = new LatLng(lat, lng);
+
+                        points.add(position);
+                    }
+
+                    // Adding all the points in the route to LineOptions
+                    lineOptions.addAll(points);
+                    lineOptions.width(2);
+                    lineOptions.color(Color.RED);
+                }
+
+
+                distance1.setText("Distance:" + distance);
+                duration1.setText("Duration" + duration);
+
+
+                // Drawing polyline in the Google Map for the i-th route
+//            mMap.addPolyline(lineOptions);
+
+                Polyline polyline = mMap.addPolyline(lineOptions);
+
+
+
+                polyline.toString();
+
+
             }
 
-
-            distance1.setText("Distance:"+distance);
-            duration1.setText("Duration" + duration);
-
-
-
-
-            // Drawing polyline in the Google Map for the i-th route
-            mMap.addPolyline(lineOptions);
         }
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -370,12 +567,29 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 
 
+
+
     @Override
     public void onLocationChanged(Location location) {
         Log.v("DOG", "Long:" + location.getLongitude() + " - Lat:" + location.getLatitude());
         setUserMarker(new LatLng(location.getLatitude(), location.getLongitude()));
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        //move map camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        GeomagneticField field = new GeomagneticField(
+                (float)location.getLatitude(),
+                (float)location.getLongitude(),
+                (float)location.getAltitude(),
+                System.currentTimeMillis()
+        );
+
+        mDeclination = field.getDeclination();
 
     }
+
 
 
     @Override
@@ -394,10 +608,13 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             return;
         }
         mMap.setMyLocationEnabled(true);
+        mMap.setOnMarkerClickListener(this);
+        mMap.setOnMapClickListener(this);
 
-        LatLng AIT = new LatLng(14.078013, 100.614952);
-        mMap.addMarker(new MarkerOptions().position(AIT).title("AIT parking space"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(AIT));
+
+//        LatLng AIT = new LatLng(14.078013, 100.614952);
+//        mMap.addMarker(new MarkerOptions().position(AIT).title("AIT parking space1"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(AIT));
 
     }
 
@@ -430,6 +647,24 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         mGoogleApiClient.connect();
         super.onStart();
     }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        // for the system's orientation sensor registered listeners
+//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+//                SensorManager.SENSOR_DELAY_GAME);
+//
+//
+//
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        mSensorManager.unregisterListener(this);
+//
+//    }
 
     @Override
     protected void onStop() {
@@ -468,5 +703,18 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         }
     }
 
+    private void hideList() {
+        getSupportFragmentManager().beginTransaction().hide(mListFragment).commit();
+    }
+
+    private void showList() {
+        getSupportFragmentManager().beginTransaction().show(mListFragment).commit();
+
+    }
+
+    private void hidekeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
 
 }
