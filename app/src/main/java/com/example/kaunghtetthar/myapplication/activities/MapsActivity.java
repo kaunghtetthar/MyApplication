@@ -7,11 +7,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.GeomagneticField;
 import android.hardware.SensorManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -22,18 +22,25 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.Interpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.fragments.parking_list;
 import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
 import com.example.kaunghtetthar.myapplication.locationroutedirectionmapv2.DirectionsJSONParser;
-import com.example.kaunghtetthar.myapplication.model.myapp;
-import com.example.kaunghtetthar.myapplication.services.DataService;
+import com.example.kaunghtetthar.myapplication.model.parking;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -51,6 +58,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -62,13 +71,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.example.kaunghtetthar.myapplication.R.id.sign_in;
 
 
 public class MapsActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener,
-        OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener,GoogleApiClient.ConnectionCallbacks, LocationListener {
+        OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener, GoogleApiClient.ConnectionCallbacks, LocationListener {
 
     final int PERMISSION_LOCATION = 111;
 
@@ -88,18 +98,27 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
+    Context context;
     TextView distance1;
 //    private SensorManager mSensorManager;
     TextView duration1;
     public Button send;
     private parking_list mListFragment;
+    ListView listview;
+    TextView text;
     private parkingstreaming mStreaming;
+    ContatsAdapter contatsAdapter;
+
+    public static int y;
+
 
     // record the compass picture angle turned
     private float currentDegree = 0f;
 
     // device sensor manager
     private SensorManager mSensorManager;
+
+
 
 
     public MapsActivity() {
@@ -117,6 +136,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         setContentView(R.layout.fragment_main);
 
         Bundle bundle = getIntent().getParcelableExtra("go");
+
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -171,7 +191,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
         send = (Button) findViewById(R.id.send);
 
-        send.setOnClickListener(new View.OnClickListener() {
+        go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -203,28 +223,96 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             }
 
 
-//        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        final String url = "https://maps.googleapis.com/maps/api/geocode/json?address=Oxford%20University,%20uk&sensor=false" ;
 
 
 
+        final ArrayList<parking> list = new ArrayList<>();
 
-
-        go.setOnClickListener(new View.OnClickListener() {
+        final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
-            public void onClick(View v) {
-                onMapPolyline();
+            public void onResponse(JSONObject response) {
+
+
+
+                try {
+                    JSONObject json = new JSONObject(String.valueOf(response));
+                    JSONArray result = json.getJSONArray("results");
+                    int i = 0;
+
+
+
+                    while (i < result.length()) {
+                        JSONObject fun1 = result.getJSONObject(i);
+
+                        JSONObject fun2 = fun1.getJSONObject("geometry").getJSONObject("viewport")
+                                .getJSONObject("southwest");
+
+//                        JSONObject fun3 = fun2.getJSONObject("viewport");
+
+
+                        String fun4 = fun2.getString("lat");
+
+                        int fun5 = fun2.getInt("lat");
+                        int final1 = fun2.getInt("lat");
+
+
+                        String fun = fun4.toString();
+
+
+
+
+                        Log.v("FUN1", "id :" + fun);
+                        i++;
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
             }
 
-
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.v("FUN", "Err: " + error.getLocalizedMessage());
+            }
         });
 
+        Volley.newRequestQueue(this).add(jsonRequest);
         hideList();
+    }
+
+
+    
+
+
+    public static ArrayList<parking> getBootcampLocationWithin10MilesofZip(int zipcode) {
+
+
+        final ArrayList<parking> list = new ArrayList<>();
+
+        list.add(new parking(14.078040f, 100.614946f, "free spaces : " , 0, "On the Campus : " ,  "AIT car parking", "car_icon" , "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"));
+        list.add(new parking(14.080393f, 100.612730f, "free spaces : " , 3, "On the Campus : " ,  "CSIM car parking", "car_icon", "http://techslides.com/demos/sample-videos/small.mp4"));
+        list.add(new parking(14.078857f, 100.611335f, "free soaces : " , 5,"On the Campus : " ,  "AIT Library parking", "car_icon", "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov"));
+
+        Log.v("FUN6" , "id :" +0);
+
+
+        return list;
+
+
+
+
     }
 
 
     public void onMapPolyline() {
 
-        final ArrayList<myapp> locations = DataService.getInstance().getBootcampLocationWithin10MilesofZip(12120);
+//       final ArrayList<parking> locations = parkingdata.getInstance().getBootcampLocationWithin10MilesofZip(12120);
+
+
 
         Bundle bundle =  getIntent().getParcelableExtra("go");
         LatLng godrive = bundle.getParcelable("LatLng");
@@ -287,38 +375,109 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     public void setUserMarker(LatLng latLng) {
         if (userMarker == null) {
             userMarker = new MarkerOptions().position(latLng).title("Current location : " + latLng.latitude + "," + latLng.longitude);
-            mMap.addMarker(userMarker);
             mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
             Log.v("DOG", "Current location: " + latLng.latitude + " Long: " + latLng.longitude);
         }
 
-        try {
+//        try {
+//
+//            Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
+//            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+//            int zip = Integer.parseInt(addresses.get(0).getPostalCode());
+//            updateMapForZip(zip);
+//        } catch (IOException exception) {
+//
+//        }
 
-            Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            int zip = Integer.parseInt(addresses.get(0).getPostalCode());
-            updateMapForZip(zip);
-        } catch (IOException exception) {
+//        Timer timer = new Timer();
+//        TimerTask updateprofile = new CustomTimerTask(MapsActivity.this);
+//        timer.scheduleAtFixedRate(updateprofile, 10, 5000);
+//        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+
+
+        updateMapForZip(12120);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
+    }
+
+    class CustomTimerTask extends TimerTask {
+        private Context context;
+        private Handler mHandler = new Handler();
+
+
+
+        // Write Custom Constructor to pass Context
+        public CustomTimerTask(Context con) {
+            this.context = con;
+        }
+
+        @Override
+        public void run() {
+            new Thread(new Runnable() {
+
+
+                @Override
+                public void run() {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            final Handler handler = new Handler();
+                            final long start = SystemClock.uptimeMillis();
+                            final long duration = 3000;
+
+                            final Interpolator interpolator = new BounceInterpolator();
+
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    long elapsed = SystemClock.uptimeMillis() - start;
+                                    float t = Math.max(
+                                            1 - interpolator.getInterpolation((float) elapsed
+                                                    / duration), 0);
+                                    mSelectedMarker.setAnchor(0.5f, 0.1f+1*t);
+
+                                    if (t > 0.0) {
+                                        // Post again 16ms later.
+                                        handler.postDelayed(this, 16);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            }).start();
 
         }
 
-        updateMapForZip(12120);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
     }
+
 
     private void updateMapForZip(int zipcode) {
 
-        ArrayList<myapp> locations = DataService.getInstance().getBootcampLocationWithin10MilesofZip(zipcode);
 
-        for (int x = 0; x < locations.size(); x++) {
-            myapp loc = locations.get(x);
-            MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(), loc.getLongitude()));
-            marker.title(loc.getLocationTitle());
-            marker.snippet(loc.getLocationAddress());
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
-            mMap.addMarker(marker);
+
+
+        ArrayList<parking> locations = this.getBootcampLocationWithin10MilesofZip(zipcode);
+
+        Log.v("FUN5","id:" + locations.size());
+
+        try {
+                for (int x = 0; x < locations.size(); x++) {
+                    parking loc = locations.get(x);
+                    MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(), loc.getLongitude()));
+                    marker.title(loc.getLocationTitle());
+                    marker.snippet(loc.getLocationAddress());
+                    marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
+                    mMap.addMarker(marker);
+                }
+
+            } catch (SecurityException exception) {
+            //Show dialog to user saying we can't get location unless they give app permission
+            Log.v("DOG", exception.toString());
         }
+
+
 
     }
 
@@ -587,6 +746,22 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         );
 
         mDeclination = field.getDeclination();
+
+        if (mSelectedMarker != null) {
+
+            mSelectedMarker.remove();
+
+        } else {
+            mSelectedMarker = mMap.addMarker(new MarkerOptions().
+                    position(latLng).title("Current location : " + latLng.latitude + "," + latLng.longitude));
+
+        }
+
+        Timer timer = new Timer();
+        TimerTask updateProfile = new CustomTimerTask(MapsActivity.this);
+        timer.scheduleAtFixedRate(updateProfile, 10,5000);
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
 
     }
 

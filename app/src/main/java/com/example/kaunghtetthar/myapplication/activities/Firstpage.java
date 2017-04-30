@@ -47,7 +47,7 @@ public class Firstpage extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.find_map:
                 startActivity(new Intent(Firstpage.this,
-                        MapsActivity.class));
+                        HomePage.class));
                 break;
             case R.id.rest:
                 startActivity(new Intent(Firstpage.this,

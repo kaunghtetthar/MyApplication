@@ -14,12 +14,20 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+
+
+
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -45,78 +53,76 @@
         <activity
             android:name=".activities.FirstActivityMAP"
             android:label="@string/title_activity_maps">
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+
+
+        </activity>
+
+        <activity
+            android:name=".activities.HomePage"
+            android:icon="@drawable/car_icon"
+            android:label="Car Parking">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.MapsActivity"
-            android:label="@string/title_activity_maps"
+            android:icon="@drawable/car_icon"
+            android:label="CarParking"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".REST.Restful"
             android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
         </activity>
         <activity android:name=".Weather.WeatherActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
         </activity>
         <activity android:name=".CarParking.CarParkingActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
         </activity>
         <activity android:name=".videostreaming.VideoStreaming">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
         </activity>
         <activity android:name=".VLC.vlcStreaming">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
             >
         </activity>
-
         <activity android:name=".VLC.vlcActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
             >
         </activity>
-
         <activity android:name=".fragments.parkingstreaming">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
             >
         </activity>
+
 
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -127,9 +133,15 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity
-            android:name=".activities.parkinginfo"
-            android:label="@string/title_activity_parkinginfo" />
+        <application android:name="com.example.kaunghtetthar.myapplication.services.parkingapp">
+
+        </application>
+
     </application>
+
+
+
+
+
 
 </manifest>

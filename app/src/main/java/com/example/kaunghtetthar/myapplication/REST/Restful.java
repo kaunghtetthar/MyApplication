@@ -50,7 +50,7 @@ public class Restful extends Activity {
 
                 // WebServer Request URL
 //                String serverURL = "http://androidexample.com/media/webservice/JsonReturn.php";
-                String serverURL = "https://web3.cs.ait.ac.th/sites/1.json";
+                String serverURL = "http://androidexample.com/media/webservice/JsonReturn.php";
 
                 // Use AsyncTask execute Method To Prevent ANR Problem
                 new LongOperation().execute(serverURL);

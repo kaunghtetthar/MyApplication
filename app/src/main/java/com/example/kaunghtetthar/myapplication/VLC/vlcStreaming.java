@@ -46,6 +46,8 @@ public class vlcStreaming extends Activity implements IVideoPlayer {
         mSurfaceView = (SurfaceView) findViewById(R.id.player_surface);
         mSurfaceHolder = mSurfaceView.getHolder();
 
+
+
         mSurfaceFrame = (FrameLayout) findViewById(R.id.video_surface_frame);
         mMediaUrl = getIntent().getExtras().getString("videoUrl");
 //        mMediaUrl = "http://192.168.0.101:1234";

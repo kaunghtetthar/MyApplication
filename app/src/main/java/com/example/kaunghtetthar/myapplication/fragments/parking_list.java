@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kaunghtetthar.myapplication.R;
-import com.example.kaunghtetthar.myapplication.adapters.LocationsAdapter;
-import com.example.kaunghtetthar.myapplication.services.DataService;
+import com.example.kaunghtetthar.myapplication.activities.MapsActivity;
+import com.example.kaunghtetthar.myapplication.adapters.parkingAdapter;
 
 
 public class parking_list extends Fragment {
@@ -39,8 +39,9 @@ public class parking_list extends Fragment {
             RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recycler_locations);
             recyclerView.setHasFixedSize(true);
 
-            LocationsAdapter adapter = new LocationsAdapter(DataService.getInstance()
-                    .getBootcampLocationWithin10MilesofZip(12120));
+            MapsActivity activity = (MapsActivity) getActivity();
+            parkingAdapter adapter = new parkingAdapter(activity.getBootcampLocationWithin10MilesofZip(12120));
+
 
             recyclerView.setAdapter(adapter);
 

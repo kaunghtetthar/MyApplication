@@ -10,8 +10,8 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.example.kaunghtetthar.myapplication.R;
-import com.example.kaunghtetthar.myapplication.model.myapp;
-import com.example.kaunghtetthar.myapplication.services.DataService;
+import com.example.kaunghtetthar.myapplication.model.parking;
+import com.example.kaunghtetthar.myapplication.services.parkingapp;
 
 import java.util.ArrayList;
 
@@ -22,9 +22,10 @@ public class parkingstreaming extends Activity {
     ProgressDialog pDialog;
     VideoView videoview;
 
-    final ArrayList<myapp> locations = DataService.getInstance().getBootcampLocationWithin10MilesofZip(12120);
+    parkingapp task = (parkingapp)getApplication();
+    final ArrayList<parking> locations = task.getBootcampLocationWithin10MilesofZip(23);
 
-    final  myapp location = locations.get(0);
+    final  parking location = locations.get(0);
 
     // Insert your Video URL
 //    String VideoURL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";

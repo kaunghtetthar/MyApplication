@@ -6,29 +6,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kaunghtetthar.myapplication.R;
-import com.example.kaunghtetthar.myapplication.holders.LocationsViewHolder;
-import com.example.kaunghtetthar.myapplication.model.myapp;
+import com.example.kaunghtetthar.myapplication.holders.parkingviewholder;
+import com.example.kaunghtetthar.myapplication.model.parking;
 
 import java.util.ArrayList;
 
 /**
- * Created by kaunghtetthar on 4/20/17.
+ * Created by kaunghtetthar on 4/25/17.
  */
 
-public class LocationsAdapter extends RecyclerView.Adapter<LocationsViewHolder> {
+public class parkingAdapter extends RecyclerView.Adapter<parkingviewholder> {
 
-    private ArrayList<myapp> locations;
+    private ArrayList<parking> locations;
 
 
-    public LocationsAdapter(ArrayList<myapp> locations) {
+
+    public parkingAdapter(ArrayList<parking> locations) {
         this.locations = locations;
 
     }
 
-
     @Override
-    public void onBindViewHolder(LocationsViewHolder holder, int position) {
-        final  myapp location = locations.get(position);
+    public void onBindViewHolder(parkingviewholder holder, int position) {
+        final parking location = locations.get(position);
         holder.updateUI(location);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -37,7 +37,8 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsViewHolder> 
 
             }
 
-    });
+
+        });
     }
 
     @Override
@@ -48,8 +49,9 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsViewHolder> 
     }
 
     @Override
-    public LocationsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public parkingviewholder onCreateViewHolder(ViewGroup parent, int viewType) {
         View card = LayoutInflater.from(parent.getContext()).inflate(R.layout.parking_info, parent, false);
-        return new LocationsViewHolder(card);
+        return new parkingviewholder(card);
     }
 }
+

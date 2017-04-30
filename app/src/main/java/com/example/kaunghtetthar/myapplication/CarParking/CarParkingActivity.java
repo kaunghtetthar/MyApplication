@@ -18,6 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kaunghtetthar.myapplication.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,8 +27,8 @@ import java.util.Map;
 
 public class CarParkingActivity extends AppCompatActivity {
 
-    final String URL_BASE = "https://web3.cs.ait.ac.th";
-    final String URL_JSON = "/1.json";
+    String URL_BASE = "https://maps.googleapis.com/maps/api/geocode/json?address=Oxford%20University,%20uk&sensor=false";
+    final String URL_JSON = "/JsonReturn.php";
     private TextView tvjson;
     private Button http_sign_in;
     private TextView tvsite;
@@ -59,7 +60,7 @@ public class CarParkingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                jsonsignin();
+                jsonreader();
 
             }
         });
@@ -72,7 +73,7 @@ public class CarParkingActivity extends AppCompatActivity {
 
     public void jsonreader() {
 
-        final String url = URL_BASE + paths.URL_PARKINGTOTALS + URL_JSON;
+        String url = URL_BASE;
 
         tvjson = (TextView) findViewById(R.id.tvjson);
 
@@ -84,13 +85,38 @@ public class CarParkingActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-                String final1 = response.toString();
 
                 try {
-                    JSONObject params = new JSONObject(final1);
-                    int parentArray = params.getInt("id");
 
-                    Log.v("FUN3" , "id :" + parentArray);
+                    JSONObject json = new JSONObject(String.valueOf(response));
+                    JSONArray result = json.getJSONArray("results");
+
+
+                    for(int i = 0; i < result.length(); i++) {
+                        JSONObject fun1 = result.getJSONObject(i);
+
+                        JSONObject fun2 = fun1.getJSONObject("geometry").getJSONObject("viewport")
+                                .getJSONObject("southwest");
+
+//                        JSONObject fun3 = fun2.getJSONObject("viewport");
+
+
+                        String fun4 = fun2.getString("lat");
+
+
+
+                        String fun = fun4.toString();
+
+                        Log.v("FUN3", "id :" + fun);
+
+
+
+                        tvjson.setText(fun);
+                    }
+
+
+
+
 
 
                 } catch (JSONException e) {
@@ -100,8 +126,8 @@ public class CarParkingActivity extends AppCompatActivity {
 
 
                 String list = response.toString();
+//                tvjson.setText(list);
 
-                tvjson.setText(list);
 
 
             }
@@ -120,7 +146,7 @@ public class CarParkingActivity extends AppCompatActivity {
 
 
 
-            final String url = URL_BASE + paths.URL_SITES + URL_JSON ;
+            final String url = URL_BASE + URL_JSON ;
 
             tvsite = (TextView) findViewById(R.id.tvsite);
 

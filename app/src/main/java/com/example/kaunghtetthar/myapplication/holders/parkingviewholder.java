@@ -14,16 +14,15 @@ import android.widget.VideoView;
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.VLC.vlcActivity;
 import com.example.kaunghtetthar.myapplication.activities.MapsActivity;
-import com.example.kaunghtetthar.myapplication.model.myapp;
+import com.example.kaunghtetthar.myapplication.model.parking;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
- * Created by kaunghtetthar on 4/20/17.
+ * Created by kaunghtetthar on 4/25/17.
  */
 
-public class LocationsViewHolder extends RecyclerView.ViewHolder {
-
+public class parkingviewholder extends RecyclerView.ViewHolder {
 
     private ImageView locationImage;
     private TextView locationTitle;
@@ -36,7 +35,7 @@ public class LocationsViewHolder extends RecyclerView.ViewHolder {
     private Context context;
 
 
-    public LocationsViewHolder(View itemView) {
+    public parkingviewholder(View itemView) {
         super(itemView);
 
         locationImage = (ImageView) itemView.findViewById(R.id.location_img);
@@ -50,7 +49,7 @@ public class LocationsViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void updateUI(myapp location) {
+    public void updateUI(parking location) {
         String uri = location.getImgUrl();
         String chgstr = String.valueOf(location.getFreeSpace());
         final String VideoURL = location.getVideoStreaming();
@@ -88,12 +87,12 @@ public class LocationsViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
 
                 //To polyline activity
-                    Bundle args = new Bundle();
-                    args.putParcelable("LatLng", godrive);
-                    Intent intent = new Intent(context, MapsActivity.class);
-                    intent.putExtra("go", args);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(intent);
+                Bundle args = new Bundle();
+                args.putParcelable("LatLng", godrive);
+                Intent intent = new Intent(context, MapsActivity.class);
+                intent.putExtra("go", args);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);
 
 
 
@@ -108,14 +107,4 @@ public class LocationsViewHolder extends RecyclerView.ViewHolder {
 
 
     }
-
 }
-
-
-
-
-
-
-
-
-

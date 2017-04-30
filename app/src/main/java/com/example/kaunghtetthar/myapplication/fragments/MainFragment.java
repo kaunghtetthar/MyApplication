@@ -13,8 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.kaunghtetthar.myapplication.R;
-import com.example.kaunghtetthar.myapplication.model.myapp;
-import com.example.kaunghtetthar.myapplication.services.DataService;
+import com.example.kaunghtetthar.myapplication.model.parking;
+import com.example.kaunghtetthar.myapplication.services.parkingapp;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -122,10 +122,11 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
     private void updateMapForZip(int zipcode) {
 
-        ArrayList<myapp> locations = DataService.getInstance().getBootcampLocationWithin10MilesofZip(zipcode);
+        parkingapp task = (parkingapp) getContext();
+        ArrayList<parking> locations = task.getBootcampLocationWithin10MilesofZip(zipcode);
 
         for (int x = 0; x < locations.size(); x++) {
-            myapp loc = locations.get(x);
+            parking loc = locations.get(x);
             MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(),loc.getLongitude()));
             marker.title(loc.getLocationTitle());
             marker.snippet(loc.getLocationAddress());
