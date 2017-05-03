@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kaunghtetthar.myapplication.R;
+import com.example.kaunghtetthar.myapplication.fragments.parking_list;
 import com.example.kaunghtetthar.myapplication.holders.parkingviewholder;
 import com.example.kaunghtetthar.myapplication.model.parking;
 
@@ -18,18 +19,36 @@ import java.util.ArrayList;
 public class parkingAdapter extends RecyclerView.Adapter<parkingviewholder> {
 
     private ArrayList<parking> locations;
+    public parking_list mAct;
 
 
 
-    public parkingAdapter(ArrayList<parking> locations) {
+
+    public parkingAdapter( ArrayList<parking> locations,parking_list parking_list) {
         this.locations = locations;
-
+        this.mAct = parking_list;
+        this.notifyDataSetChanged();
     }
+
+    public void clearAdapter() {
+        int size = this.locations.size();
+        this.locations.clear();
+        notifyItemChanged(0,size);
+    }
+
+    public void addAdapter(ArrayList<parking> locations) {
+        this.locations.addAll(locations);
+        this.notifyItemRangeInserted(0, locations.size() - 1);
+    }
+
 
     @Override
     public void onBindViewHolder(parkingviewholder holder, int position) {
         final parking location = locations.get(position);
         holder.updateUI(location);
+
+        //To avoid reload item for holder
+        holder.setIsRecyclable(false);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +65,7 @@ public class parkingAdapter extends RecyclerView.Adapter<parkingviewholder> {
         return locations.size();
 
 
+
     }
 
     @Override
@@ -53,5 +73,7 @@ public class parkingAdapter extends RecyclerView.Adapter<parkingviewholder> {
         View card = LayoutInflater.from(parent.getContext()).inflate(R.layout.parking_info, parent, false);
         return new parkingviewholder(card);
     }
+
+
 }
 

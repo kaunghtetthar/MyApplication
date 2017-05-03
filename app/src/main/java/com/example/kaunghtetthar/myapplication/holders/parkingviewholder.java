@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.kaunghtetthar.myapplication.R;
-import com.example.kaunghtetthar.myapplication.VLC.vlcActivity;
+import com.example.kaunghtetthar.myapplication.VLC.vlcStreaming;
 import com.example.kaunghtetthar.myapplication.activities.MapsActivity;
 import com.example.kaunghtetthar.myapplication.model.parking;
 import com.google.android.gms.maps.model.LatLng;
@@ -49,10 +49,12 @@ public class parkingviewholder extends RecyclerView.ViewHolder {
 
     }
 
-    public void updateUI(parking location) {
+    public void updateUI(final parking location) {
         String uri = location.getImgUrl();
-        String chgstr = String.valueOf(location.getFreeSpace());
+        final String chgstr = String.valueOf(location.getFreeSpace());
         final String VideoURL = location.getVideoStreaming();
+        final String freespace = location.getFreespacesTitle();
+        final int id = location.getParkingid();
 
         MarkerOptions marker = new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude()));
         final LatLng godrive = marker.getPosition();
@@ -64,7 +66,7 @@ public class parkingviewholder extends RecyclerView.ViewHolder {
         locationTitle.setText(location.getLocationTitle());
         locationAddress.setText(location.getLocationAddress());
 
-        freespaces.setText(location.getFreespacesTitle());
+        freespaces.setText(location.toString());
         videostreaming.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,8 +74,10 @@ public class parkingviewholder extends RecyclerView.ViewHolder {
                 //To videostreaming activity
 
                 if (v.getId() == videostreaming.getId()) {
-                    Intent intent = new Intent(context, vlcActivity.class);
+                    Intent intent = new Intent(context, vlcStreaming.class);
                     intent.putExtra("url", VideoURL);
+                    intent.putExtra("freespace", location.toString());
+                    intent.putExtra("id", location.getParkingid());
                     context.startActivity(intent);
 
                 }

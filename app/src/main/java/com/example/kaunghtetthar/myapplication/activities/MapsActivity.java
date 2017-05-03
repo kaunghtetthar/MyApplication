@@ -31,11 +31,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.example.kaunghtetthar.myapplication.DAOs.IParkingDAO;
+import com.example.kaunghtetthar.myapplication.DAOs.OnlineParkingDAO;
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.fragments.parking_list;
 import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
@@ -58,8 +55,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -108,6 +103,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     TextView text;
     private parkingstreaming mStreaming;
     ContatsAdapter contatsAdapter;
+    private static final double RANGE = 0.001;
+    private IParkingDAO parkingDAO;
 
     public static int y;
 
@@ -156,12 +153,19 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         mainFragment.getMapAsync(this);
 
         mListFragment = (parking_list) getSupportFragmentManager().findFragmentById(R.id.container_locations_list);
+        mListFragment = (parking_list) getSupportFragmentManager().findFragmentByTag("TAG");
 
         if (mListFragment == null) {
             mListFragment = parking_list.newInstance();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container_locations_list, mListFragment).commit();
+                    .add(R.id.container_locations_list, mListFragment, "TAG").commit();
+
         }
+
+
+
+
+
 
         final EditText zipText = (EditText) findViewById(R.id.zip_text);
         zipText.setOnKeyListener(new View.OnKeyListener() {
@@ -177,7 +181,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
                     showList();
-                    updateMapForZip(zip);
                     return true;
                 }
                 hidekeyboard();
@@ -187,9 +190,18 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         });
 
 
+
+
         go = (Button) findViewById(R.id.go);
 
         send = (Button) findViewById(R.id.send);
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         go.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,114 +215,63 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
         if (bundle != null) {
 
-                Thread timer = new Thread() {
+            Thread timer = new Thread() {
 
-                    public void run() {
-                        try {
-                            sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } finally {
-                            onMapPolyline();
-                            hidekeyboard();
+                public void run() {
+                    try {
+                        sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } finally {
+                        onMapPolyline();
+                        hidekeyboard();
 
-                        }
                     }
-                };
+                }
+            };
                 timer.start();
             } else {
 
             }
 
+        //initialize the parkingDAO.
+        parkingDAO = new OnlineParkingDAO();
 
-        final String url = "https://maps.googleapis.com/maps/api/geocode/json?address=Oxford%20University,%20uk&sensor=false" ;
-
-
-
-        final ArrayList<parking> list = new ArrayList<>();
-
-        final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-
-
-                try {
-                    JSONObject json = new JSONObject(String.valueOf(response));
-                    JSONArray result = json.getJSONArray("results");
-                    int i = 0;
-
-
-
-                    while (i < result.length()) {
-                        JSONObject fun1 = result.getJSONObject(i);
-
-                        JSONObject fun2 = fun1.getJSONObject("geometry").getJSONObject("viewport")
-                                .getJSONObject("southwest");
-
-//                        JSONObject fun3 = fun2.getJSONObject("viewport");
-
-
-                        String fun4 = fun2.getString("lat");
-
-                        int fun5 = fun2.getInt("lat");
-                        int final1 = fun2.getInt("lat");
-
-
-                        String fun = fun4.toString();
-
-
-
-
-                        Log.v("FUN1", "id :" + fun);
-                        i++;
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.v("FUN", "Err: " + error.getLocalizedMessage());
-            }
-        });
-
-        Volley.newRequestQueue(this).add(jsonRequest);
         hideList();
     }
 
 
-    
 
+    final String url = "https://maps.googleapis.com/maps/api/geocode/json?address=Oxford%20University,%20uk&sensor=false" ;
+    final String url1 = "http://192.168.0.101:8000/parking/parkingtext.json" ;
 
-    public static ArrayList<parking> getBootcampLocationWithin10MilesofZip(int zipcode) {
+    int final1;
+    int final2;
+
+    public ArrayList<parking> getBootcampLocationWithin10MilesofZip() {
 
 
         final ArrayList<parking> list = new ArrayList<>();
 
-        list.add(new parking(14.078040f, 100.614946f, "free spaces : " , 0, "On the Campus : " ,  "AIT car parking", "car_icon" , "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"));
-        list.add(new parking(14.080393f, 100.612730f, "free spaces : " , 3, "On the Campus : " ,  "CSIM car parking", "car_icon", "http://techslides.com/demos/sample-videos/small.mp4"));
-        list.add(new parking(14.078857f, 100.611335f, "free soaces : " , 5,"On the Campus : " ,  "AIT Library parking", "car_icon", "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov"));
-
-        Log.v("FUN6" , "id :" +0);
 
 
-        return list;
+//                    list.add(new parking(14.078040f, 100.614946f, "free spaces : ", final1, "On the Campus : ", "AIT car parking", "car_icon", "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"));
+//                    list.add(new parking(14.080393f, 100.612730f, "free spaces : ", 3, "On the Campus : ", "CSIM car parking", "car_icon", "http://techslides.com/demos/sample-videos/small.mp4"));
+//                    list.add(new parking(14.078857f, 100.611335f, "free soaces : ", 5, "On the Campus : ", "AIT Library parking", "car_icon", "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov"));
 
 
 
 
+        return  list;
     }
 
 
-    public void onMapPolyline() {
 
-//       final ArrayList<parking> locations = parkingdata.getInstance().getBootcampLocationWithin10MilesofZip(12120);
+
+
+
+
+    public void onMapPolyline() {
 
 
 
@@ -336,6 +297,10 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         // Start downloading json data from Google Directions API
         downloadTask.execute(url);
 
+
+
+
+
     }
 
 
@@ -351,12 +316,10 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
         if (null != mSelectedMarker) {
 
+            mSelectedMarker = marker;
+        }
 
-            }
 
-
-        mSelectedMarker = marker;
-        mSelectedMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
         return false;
     }
 
@@ -396,8 +359,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 //        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
 
-
-        updateMapForZip(12120);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
     }
 
@@ -452,34 +413,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
     }
 
-
-    private void updateMapForZip(int zipcode) {
-
-
-
-
-        ArrayList<parking> locations = this.getBootcampLocationWithin10MilesofZip(zipcode);
-
-        Log.v("FUN5","id:" + locations.size());
-
-        try {
-                for (int x = 0; x < locations.size(); x++) {
-                    parking loc = locations.get(x);
-                    MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(), loc.getLongitude()));
-                    marker.title(loc.getLocationTitle());
-                    marker.snippet(loc.getLocationAddress());
-                    marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon));
-                    mMap.addMarker(marker);
-                }
-
-            } catch (SecurityException exception) {
-            //Show dialog to user saying we can't get location unless they give app permission
-            Log.v("DOG", exception.toString());
-        }
-
-
-
-    }
 
 
     private String getDirectionsUrl(LatLng latLng,LatLng dest){
@@ -622,6 +555,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
             ParserTask parserTask = new ParserTask();
 
+
             // Invokes the thread for parsing the JSON data
             parserTask.execute(result);
         }
@@ -734,18 +668,30 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         setUserMarker(new LatLng(location.getLatitude(), location.getLongitude()));
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+
+        // create an instance of the ParkingSearchTask
+        ParkingSearchTask pst = new ParkingSearchTask();
+
+        //start the PST thread
+        pst.execute(latitude, longitude, RANGE);
+
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
         GeomagneticField field = new GeomagneticField(
-                (float)location.getLatitude(),
-                (float)location.getLongitude(),
-                (float)location.getAltitude(),
+                (float) location.getLatitude(),
+                (float) location.getLongitude(),
+                (float) location.getAltitude(),
                 System.currentTimeMillis()
         );
 
-        mDeclination = field.getDeclination();
+        mDeclination += field.getDeclination();
+
+       
+
 
         if (mSelectedMarker != null) {
 
@@ -763,8 +709,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
 
-    }
 
+    }
 
 
     @Override
@@ -785,6 +731,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         mMap.setMyLocationEnabled(true);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapClickListener(this);
+
+
+
 
 
 //        LatLng AIT = new LatLng(14.078013, 100.614952);
@@ -891,5 +840,44 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
+
+
+    public class ParkingSearchTask extends AsyncTask<Double, Integer, List<parking>> {
+
+        // onPostExecute runs in the main/UI thread, and thus,
+        // has access to UI objects
+
+        @Override
+        protected void onPostExecute(List<parking> result) {
+            for (parking parking: result) {
+                LatLng position = new LatLng(parking.getLatitude(), parking.getLongitude());
+
+                //add a marker to the map
+                mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon)).position(position).
+                        title(parking.toString()).
+                        snippet(parking.getLocationAddress()));
+            }
+
+        }
+
+        // doInBackground runs in a thread separate from the UI thread,
+        // and thus, can perform network operations.
+        // We must invoke this by calling a method named execute().
+
+        @Override
+        protected List<parking> doInBackground(Double... params) {
+
+            List<parking> parkingsByLocation = new ArrayList<>();
+            try {
+                parkingsByLocation = parkingDAO.fetchParkingsByLocation(params[0], params[1], params[2]);
+            } catch (Exception e) {
+                e.printStackTrace();
+        }
+
+            return parkingsByLocation;
+    }
+
+    }
+
 
 }

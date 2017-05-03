@@ -11,6 +11,8 @@ import android.widget.EditText;
 
 import com.example.kaunghtetthar.myapplication.R;
 
+
+
 public class vlcActivity extends ActionBarActivity {
 
     @Override
@@ -23,8 +25,12 @@ public class vlcActivity extends ActionBarActivity {
 
         if(extras!=null) {
             String url = extras.getString("url");
+            String freespace = extras.getString("freespace");
+            int id = extras.getInt("id");
             Intent intent = new Intent(getApplicationContext(), vlcStreaming.class);
             intent.putExtra("videoUrl", url);
+            intent.putExtra("freespaces" , freespace);
+            intent.putExtra("ids", id);
             startActivity(intent);
 
         } else {

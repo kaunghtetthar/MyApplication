@@ -7,6 +7,11 @@ package com.example.kaunghtetthar.myapplication.model;
 public class parking {
 
 
+    public parking() {
+
+    }
+
+
     final String DRAWABLE = "drawable/";
 
 
@@ -14,15 +19,16 @@ public class parking {
         return DRAWABLE + locationImrUrl;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
     public int getFreeSpace() {
+
         return freespaces;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
@@ -47,24 +53,82 @@ public class parking {
 
 
 
-    private float longitude;
-    private float latitude;
-    private String locationTitle;
-    private String locationAddress;
+
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLocationTitle(String locationTitle) {
+        this.locationTitle = locationTitle;
+    }
+
+    public void setLocationAddress(String locationAddress) {
+        this.locationAddress = locationAddress;
+    }
+
+    public void setLocationImrUrl(String locationImrUrl) {
+        this.locationImrUrl = locationImrUrl;
+    }
+
+    public void setVideoStreaming(String videoStreaming) {
+        this.videoStreaming = videoStreaming;
+    }
+
+    public void setFreespacesTitle(String freespacesTitle) {
+        this.freespacesTitle = freespacesTitle + freespaces;
+    }
+
+    public int getTotalslots() {
+        return totalslots;
+    }
+
+    public void setTotalslots(int totalslots) {
+        this.totalslots = totalslots;
+    }
+
+    public void setFreespaces(int freespaces) {
+        this.freespaces = freespaces;
+    }
+
     private String locationImrUrl;
     private String videoStreaming;
     private String freespacesTitle;
-    private int freespaces;
 
-    public parking(float latitude, float longitude, String freespacesTitle, int freespaces, String locationTitle, String locationAddress, String locationImrUrl, String videoStreaming) {
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.locationTitle = locationTitle + longitude + latitude;
-        this.locationAddress = locationAddress;
-        this.locationImrUrl = locationImrUrl;
-        this.videoStreaming = videoStreaming;
-        this.freespaces =  freespaces ;
-        this.freespacesTitle = freespacesTitle + freespaces;
-
+    public String getTotalslotsTitle() {
+        return totalslotsTitle;
     }
+
+    public void setTotalslotsTitle(String totalslotsTitle) {
+        this.totalslotsTitle = totalslotsTitle;
+    }
+
+    private String totalslotsTitle;
+    private int freespaces;
+    private int totalslots;
+    private double longitude;
+    private double latitude;
+    private String locationTitle;
+    private String locationAddress;
+
+    public int getParkingid() {
+        return parkingid;
+    }
+
+    public void setParkingid(int parkingid) {
+        this.parkingid = parkingid;
+    }
+
+    private int parkingid;
+
+    public String toString() {
+
+    return "Totalslots :  " + totalslots + "    Freespace :  " + freespaces ;
+
+
+        }
 }
