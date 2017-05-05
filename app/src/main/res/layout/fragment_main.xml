@@ -76,7 +76,8 @@
             android:layout_toRightOf="@+id/go"
             android:layout_toEndOf="@+id/go"
             android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp">
+            android:layout_marginStart="12dp"
+            android:id="@+id/linearLayout">
 
             <TextView
                 android:text="Distance"
@@ -102,6 +103,8 @@
 
         </LinearLayout>
 
+
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="300dp"
@@ -109,6 +112,20 @@
             android:layout_alignParentBottom="true">
 
         </FrameLayout>
+
+
+
+        <TextView
+            android:id="@+id/free_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_marginStart="11dp"
+            android:textColor="@color/colorAccent"
+            android:layout_alignBottom="@+id/send"
+            android:layout_alignParentLeft="true"
+            android:textSize="30dp"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 

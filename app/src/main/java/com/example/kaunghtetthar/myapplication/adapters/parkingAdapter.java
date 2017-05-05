@@ -20,6 +20,8 @@ public class parkingAdapter extends RecyclerView.Adapter<parkingviewholder> {
 
     private ArrayList<parking> locations;
     public parking_list mAct;
+    // Start with first item selected
+    private int focusedItem = 0;
 
 
 
@@ -49,7 +51,6 @@ public class parkingAdapter extends RecyclerView.Adapter<parkingviewholder> {
 
         //To avoid reload item for holder
         holder.setIsRecyclable(false);
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
