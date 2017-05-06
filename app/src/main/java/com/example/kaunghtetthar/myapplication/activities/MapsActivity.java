@@ -38,6 +38,7 @@ import com.example.kaunghtetthar.myapplication.fragments.parking_list;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.example.kaunghtetthar.myapplication.fragments.placepicker;
 
 import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
@@ -51,6 +52,8 @@ import com.example.kaunghtetthar.myapplication.fragments.placepicker;
 =======
 import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of a2c96b8... hello error
 =======
 >>>>>>> parent of a2c96b8... hello error
 =======
@@ -127,6 +130,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     private final static int PLACE_PICKER_REQUEST = 1;
 //    private PlacePicker placepicker1;
     private placepicker mplacepicker;
@@ -141,6 +145,12 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     double currentalti;
 >>>>>>> parent of a2c96b8... hello error
 =======
+=======
+
+    double currentlat;
+    double currentlng;
+    double currentalti;
+>>>>>>> parent of a2c96b8... hello error
 
     double currentlat;
     double currentlng;
@@ -168,6 +178,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
 =======
 
+<<<<<<< HEAD
+>>>>>>> parent of a2c96b8... hello error
+=======
 >>>>>>> parent of a2c96b8... hello error
 
 
@@ -296,6 +309,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 <<<<<<< HEAD
@@ -491,6 +505,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 //                    list.add(new parking(14.078040f, 100.614946f, "free spaces : ", final1, "On the Campus : ", "AIT car parking", "car_icon", "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"));
 //                    list.add(new parking(14.080393f, 100.612730f, "free spaces : ", 3, "On the Campus : ", "CSIM car parking", "car_icon", "http://techslides.com/demos/sample-videos/small.mp4"));
 //                    list.add(new parking(14.078857f, 100.611335f, "free soaces : ", 5, "On the Campus : ", "AIT Library parking", "car_icon", "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov"));
+=======
+>>>>>>> parent of a2c96b8... hello error
 
 
 
@@ -639,6 +655,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
@@ -646,6 +663,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
     }
 
+=======
+>>>>>>> parent of a2c96b8... hello error
 =======
 >>>>>>> parent of a2c96b8... hello error
 =======
@@ -1146,6 +1165,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
        
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1252,8 +1272,10 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                     position(new LatLng(location.getLatitude(), location.getLongitude())).title("Current location : " + latLng.latitude + "," + latLng.longitude));
 >>>>>>> parent of a2c96b8... hello error
 =======
+=======
 
 
+>>>>>>> parent of a2c96b8... hello error
 
         if (mSelectedMarker != null) {
 
@@ -1261,6 +1283,17 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
         }
 
+<<<<<<< HEAD
+        if (mSelectedMarker != null) {
+
+            mSelectedMarker.remove();
+
+        }
+
+            mSelectedMarker = mMap.addMarker(new MarkerOptions().
+                    position(new LatLng(location.getLatitude(), location.getLongitude())).title("Current location : " + latLng.latitude + "," + latLng.longitude));
+>>>>>>> parent of a2c96b8... hello error
+=======
             mSelectedMarker = mMap.addMarker(new MarkerOptions().
                     position(new LatLng(location.getLatitude(), location.getLongitude())).title("Current location : " + latLng.latitude + "," + latLng.longitude));
 >>>>>>> parent of a2c96b8... hello error
@@ -1436,8 +1469,11 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 final Marker maker = mMap.addMarker(marker);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
+=======
+>>>>>>> parent of a2c96b8... hello error
 
 
 
@@ -1454,6 +1490,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                         mMap.addMarker(marker);
                     }
                 });
+<<<<<<< HEAD
+>>>>>>> parent of a2c96b8... hello error
+=======
 >>>>>>> parent of a2c96b8... hello error
 
 
