@@ -39,13 +39,6 @@ import com.example.kaunghtetthar.myapplication.DAOs.IParkingDAO;
 import com.example.kaunghtetthar.myapplication.DAOs.OnlineParkingDAO;
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.fragments.parking_list;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-
 import com.example.kaunghtetthar.myapplication.fragments.placepicker;
 
 import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
@@ -54,20 +47,8 @@ import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
 import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
 
 
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
-=======
 import com.example.kaunghtetthar.myapplication.fragments.placepicker;
->>>>>>> parent of 37b1e00... apk
-=======
->>>>>>> parent of a2c96b8... hello error
+
 import com.example.kaunghtetthar.myapplication.locationroutedirectionmapv2.DirectionsJSONParser;
 import com.example.kaunghtetthar.myapplication.model.parking;
 import com.google.android.gms.common.ConnectionResult;
@@ -124,36 +105,12 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     TextView freespace;
     private static final double RANGE = 0.001;
     private IParkingDAO parkingDAO;
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of 37b1e00... apk
     private final static int PLACE_PICKER_REQUEST = 1;
 //    private PlacePicker placepicker1;
     private placepicker mplacepicker;
-=======
-
->>>>>>> parent of a2c96b8... hello error
     double currentlat;
     double currentlng;
     double currentalti;
-
-<<<<<<< HEAD
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
->>>>>>> parent of 37b1e00... apk
     public static int y;
     private float go1;
 
@@ -162,35 +119,17 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     private float currentDegree = 0f;
 
     // device sensor manager
-<<<<<<< HEAD
+
     private SensorManager mSensorManager;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
     private SensorManager SM;
     private Sensor mySensor;
     private Float xvalue, yvalue, zvalue;
->>>>>>> parent of 37b1e00... apk
 
 
-<<<<<<< HEAD
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private final static int MY_PERMISSION_FINE_LOCATION = 101;
 
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-
-
-=======
->>>>>>> parent of a2c96b8... hello error
 
 
     public MapsActivity() {
@@ -792,73 +731,66 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 //
 //
 //    }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
+//<<<<<<< HEAD
+//<<<<<<< HEAD
+//<<<<<<< HEAD
+//<<<<<<< HEAD
+//<<<<<<< HEAD
+//=======
+//>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+//=======
+//>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+//
+//    private void updateCamera(float bearing) {
+//        CameraPosition oldPos = mMap.getCameraPosition();
+//        CameraPosition pos = CameraPosition.builder(oldPos).bearing(bearing).build();
+//        GoogleMap.CancelableCallback callback = new GoogleMap.CancelableCallback() {
+//            @Override
+//            public void onFinish() {
+//<<<<<<< HEAD
+//<<<<<<< HEAD
+//
+//=======
+//=======
+//>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+//
+//    private void updateCamera(float bearing) {
+//        CameraPosition oldPos = mMap.getCameraPosition();
+//        CameraPosition pos = CameraPosition.builder(oldPos).bearing(bearing).build();
+//        GoogleMap.CancelableCallback callback = new GoogleMap.CancelableCallback() {
+//            @Override
+//            public void onFinish() {
+//
+//<<<<<<< HEAD
+//>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+//=======
 
-    private void updateCamera(float bearing) {
-        CameraPosition oldPos = mMap.getCameraPosition();
-        CameraPosition pos = CameraPosition.builder(oldPos).bearing(bearing).build();
-        GoogleMap.CancelableCallback callback = new GoogleMap.CancelableCallback() {
-            @Override
-            public void onFinish() {
-<<<<<<< HEAD
-<<<<<<< HEAD
+//    private void updateCamera(float bearing) {
+//        CameraPosition oldPos = mMap.getCameraPosition();
+//        CameraPosition pos = CameraPosition.builder(oldPos).bearing(bearing).build();
+//        GoogleMap.CancelableCallback callback = new GoogleMap.CancelableCallback() {
+//            @Override
+//            public void onFinish() {
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//
+//            }
+//=======
+//
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//
+//            }
+//        };
+//        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(pos), 24, callback);
+//    }
 
-=======
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-
-    private void updateCamera(float bearing) {
-        CameraPosition oldPos = mMap.getCameraPosition();
-        CameraPosition pos = CameraPosition.builder(oldPos).bearing(bearing).build();
-        GoogleMap.CancelableCallback callback = new GoogleMap.CancelableCallback() {
-            @Override
-            public void onFinish() {
-
-<<<<<<< HEAD
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
-
-    private void updateCamera(float bearing) {
-        CameraPosition oldPos = mMap.getCameraPosition();
-        CameraPosition pos = CameraPosition.builder(oldPos).bearing(bearing).build();
-        GoogleMap.CancelableCallback callback = new GoogleMap.CancelableCallback() {
-            @Override
-            public void onFinish() {
-
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-=======
-
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-=======
-
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
->>>>>>> parent of 9a106d1... rotation with onsensorchanged
-        };
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(pos), 24, callback);
-    }
-=======
->>>>>>> parent of 37b1e00... apk
 
 
     // Fetches data from url passed
@@ -885,15 +817,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of 37b1e00... apk
                 ParserTask parserTask = new ParserTask();
                 Double destLat = Double.valueOf(getIntent().getExtras().getString("lat"));
                 Double destLng = Double.valueOf(getIntent().getExtras().getString("lng"));
