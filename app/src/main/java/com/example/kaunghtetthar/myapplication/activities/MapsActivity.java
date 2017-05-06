@@ -732,7 +732,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             super.onPostExecute(result);
 
             ParserTask parserTask = new ParserTask();
-            
+
                 ParserTask parserTask = new ParserTask();
                 Double destLat = Double.valueOf(getIntent().getExtras().getString("lat"));
                 Double destLng = Double.valueOf(getIntent().getExtras().getString("lng"));
