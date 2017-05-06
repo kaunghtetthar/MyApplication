@@ -9,22 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.kaunghtetthar.myapplication.R;
-import com.example.kaunghtetthar.myapplication.model.parking;
-import com.example.kaunghtetthar.myapplication.services.parkingapp;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.ArrayList;
 
 /**
  * Created by kaunghtetthar on 12/13/16.
@@ -90,12 +84,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
                     .add(R.id.container_locations_list, mListFragment).commit();
         }
 
-        final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
-        zipText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
 
-
-                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
 
         final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
@@ -114,7 +103,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
                     InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
                     showList();
-                    updateMapForZip(zip);
+//                    updateMapForZip(zip);
                     return true;
                 }
                 return false;
@@ -144,25 +133,25 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
         }
 
 
-        updateMapForZip(12120);
+//        updateMapForZip(12120);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
     }
 
-    private void updateMapForZip(int zipcode) {
-
-        parkingapp task = (parkingapp) getContext();
-        ArrayList<parking> locations = task.getBootcampLocationWithin10MilesofZip(zipcode);
-
-        for (int x = 0; x < locations.size(); x++) {
-            parking loc = locations.get(x);
-            MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(),loc.getLongitude()));
-            marker.title(loc.getLocationTitle());
-            marker.snippet(loc.getLocationAddress());
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.places_ic_clear));
-            mMap.addMarker(marker);
-        }
-
-    }
+//    private void updateMapForZip(int zipcode) {
+//
+//        parkingapp task = (parkingapp) getContext();
+//        ArrayList<parking> locations = task.getBootcampLocationWithin10MilesofZip(zipcode);
+//
+//        for (int x = 0; x < locations.size(); x++) {
+//            parking loc = locations.get(x);
+//            MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(),loc.getLongitude()));
+//            marker.title(loc.getLocationTitle());
+//            marker.snippet(loc.getLocationAddress());
+//            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.places_ic_clear));
+//            mMap.addMarker(marker);
+//        }
+//
+//    }
 //
 //    private void sendRequest() {
 //        String origin =  mMap.toString();

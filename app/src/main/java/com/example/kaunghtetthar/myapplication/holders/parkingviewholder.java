@@ -55,6 +55,8 @@ public class parkingviewholder extends RecyclerView.ViewHolder {
         final String VideoURL = location.getVideoStreaming();
         final String freespace = location.getFreespacesTitle();
         final int id = location.getParkingid();
+        final String latitude = String.valueOf(location.getLatitude());
+        final String longitude = String.valueOf(location.getLongitude());
 
         MarkerOptions marker = new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude()));
         final LatLng godrive = marker.getPosition();
@@ -94,6 +96,9 @@ public class parkingviewholder extends RecyclerView.ViewHolder {
                 Bundle args = new Bundle();
                 args.putParcelable("LatLng", godrive);
                 Intent intent = new Intent(context, MapsActivity.class);
+                intent.putExtra("go", args);
+                intent.putExtra("lat", latitude);
+                intent.putExtra("lng", longitude);
                 intent.putExtra("go", args);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);

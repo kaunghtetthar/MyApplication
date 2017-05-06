@@ -82,7 +82,7 @@ public class OnlineParkingDAO implements IParkingDAO {
     }
 
     public List<parking> fetch(parking searchParking) throws Exception {
-        String queryURL = "http://192.168.0.101:8000/parking/parkingtext.json";
+        String queryURL = "http://192.168.0.101:8000/results.json";
 
         String searchTerm = searchParking.getLocationAddress();
 

@@ -8,11 +8,10 @@ import java.util.List;
 
 public interface DirectionFinderListener {
     void onDirectionFinderStart();
-<<<<<<< HEAD
+
     void onDirectionFinderSuccess(List<Route> route);
 }
-=======
-    void onDirectionFinderSuccess(List<Route> routes);
-}
 
->>>>>>> origin/master
+
+
+

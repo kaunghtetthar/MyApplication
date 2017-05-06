@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.kaunghtetthar.myapplication.CarParking.CarParkingActivity;
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.REST.Restful;
-import com.example.kaunghtetthar.myapplication.Weather.WeatherActivity;
 import com.example.kaunghtetthar.myapplication.videostreaming.VideoStreaming;
 import com.example.kaunghtetthar.myapplication.VLC.vlcActivity;
 
@@ -53,18 +51,7 @@ public class Firstpage extends Activity implements View.OnClickListener {
                 startActivity(new Intent(Firstpage.this,
                         Restful.class));
                 break;
-            case R.id.weather:
-                startActivity(new Intent(Firstpage.this,
-                        WeatherActivity.class));
-                break;
-            case R.id.carparking:
-                startActivity(new Intent(Firstpage.this,
-                        CarParkingActivity.class));
-                break;
-            case R.id.sign_in:
-                startActivity(new Intent(Firstpage.this,
-                        CarParkingActivity.class));
-                break;
+
             case R.id.streaming:
                 startActivity(new Intent(Firstpage.this,
                         VideoStreaming.class));
