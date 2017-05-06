@@ -21,7 +21,10 @@ public class DataService {
     public ArrayList<myapp> getBootcampLocationWithin10MilesofZip(int zipcode) {
         //pretending we are downloading data from the server
         ArrayList<myapp> list = new ArrayList<>();
-        list.add(new myapp(14.078040f, 100.614946f, "On the Campus : " ,  "AIT car parking", "car_icon"));
+        list.add(new myapp(14.078040f, 100.614946f, "free spaces : " , 3, "On the Campus : " ,  "AIT car parking", "car_icon" , "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"));
+        list.add(new myapp(14.080393f, 100.612730f, "free spaces : " , 4, "On the Campus : " ,  "CSIM car parking", "car_icon", "http://techslides.com/demos/sample-videos/small.mp4"));
+        list.add(new myapp(14.078857f, 100.611335f, "free soaces : " , 0,"On the Campus : " ,  "AIT Library parking", "car_icon", "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov"));
+
         return list;
     }
 }

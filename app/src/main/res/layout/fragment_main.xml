@@ -7,7 +7,7 @@
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
+        android:id="@+id/sign_in"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,19 +39,35 @@
                 android:src="@drawable/cast_ic_notification_0"
                 android:background="#00000000"/>
 
+                <EditText
+                    android:id="@+id/zip_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginStart="39dp"
+                    android:layout_weight="0.1"
+                    android:hint="@string/zip_hint" />
+
                 //To enter the zip code
 <<<<<<< HEAD
 
             </LinearLayout>
 
 
-        <EditText
-            android:id="@+id/zip_text"
+        <Button
+            android:text="Send"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:hint="@string/zip_hint"
-            android:inputType="number"/>
-
+            android:layout_height="wrap_content"
+            android:id="@+id/send"
+            android:layout_weight="1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="350dp"
+            android:layout_alignTop="@+id/go" />
 
         <Button
             android:text="Go"
@@ -79,14 +95,14 @@
                 android:layout_alignBottom="@+id/go"
                 android:layout_toRightOf="@+id/go"
                 android:layout_toEndOf="@+id/go"
-                android:id="@+id/distance"
+                android:id="@+id/distance1"
                 android:textColor="@color/colorAccent" />
 
             <TextView
                 android:text="Duration"
                 android:layout_width="105dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/duration"
+                android:id="@+id/duration1"
                 android:textColor="@color/colorAccent"
                 android:layout_marginLeft="38dp"
                 android:layout_alignBaseline="@+id/distance"
@@ -100,9 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:id="@+id/container_locations_list"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentBottom="true">
 
         </FrameLayout>
 =======
@@ -134,7 +148,57 @@
                 android:layout_alignParentBottom="true">
 >>>>>>> origin/master
 
+<<<<<<< HEAD
 
+
+        <TextView
+            android:id="@+id/free_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_marginStart="11dp"
+            android:textColor="@color/colorAccent"
+            android:layout_alignBottom="@+id/send"
+            android:layout_alignParentLeft="true"
+            android:textSize="30dp"
+            android:layout_alignParentStart="true" />
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of 37b1e00... apk
+=======
+>>>>>>> parent of a2c96b8... hello error
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of a2c96b8... hello error
+=======
+>>>>>>> parent of a2c96b8... hello error
+=======
+>>>>>>> parent of a2c96b8... hello error
+=======
+>>>>>>> parent of a2c96b8... hello error
     </RelativeLayout>
 
 

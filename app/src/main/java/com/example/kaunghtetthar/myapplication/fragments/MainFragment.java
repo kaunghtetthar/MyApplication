@@ -9,15 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-<<<<<<< HEAD
+
 import android.widget.Button;
-=======
->>>>>>> origin/master
 import android.widget.EditText;
 
 import com.example.kaunghtetthar.myapplication.R;
-import com.example.kaunghtetthar.myapplication.model.myapp;
-import com.example.kaunghtetthar.myapplication.services.DataService;
+import com.example.kaunghtetthar.myapplication.model.parking;
+import com.example.kaunghtetthar.myapplication.services.parkingapp;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,15 +34,17 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private MarkerOptions userMarker;
-<<<<<<< HEAD
+
     private Button go;
-=======
+
+    private parking_list mListFragment;
+
 //    private Button btnFindPath;
 //    private List<Marker> originMarkers = new ArrayList<>();
 //    private List<Marker> destinationMarkers = new ArrayList<>();
 //    private List<Polyline> polylinePaths = new ArrayList<>();
 //    private ProgressDialog progressDialog;
->>>>>>> origin/master
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -60,8 +60,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-<<<<<<< HEAD
-=======
+
        // btnFindPath = (Button) findViewById(R.id.btnFindPath);
 
 //        btnFindPath.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +69,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 //                sendRequest();
 //            }
 //        });
->>>>>>> origin/master
+
     }
 
 
@@ -79,9 +78,25 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.sign_in);
         mapFragment.getMapAsync(this);
 
+        mListFragment = (parking_list)getActivity().getSupportFragmentManager().findFragmentById(R.id.container_locations_list);
+
+
+        if (mListFragment == null) {
+            mListFragment = parking_list.newInstance();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container_locations_list, mListFragment).commit();
+        }
+
+        final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
+        zipText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+
+
+                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+
 
         final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
         zipText.setOnKeyListener(new View.OnKeyListener() {
@@ -90,22 +105,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
                 if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
-<<<<<<< HEAD
-        final EditText zipText = (EditText)view.findViewById(R.id.zip_text);
-        zipText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
-=======
->>>>>>> origin/master
                     //You should make sure this is a valid zip code
                     String text = zipText.getText().toString();
                     int zip = Integer.parseInt(text);
 
                     InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
+                    showList();
                     updateMapForZip(zip);
                     return true;
                 }
@@ -113,6 +121,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        hideList();
         return view;
     }
 
@@ -141,10 +150,11 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
     private void updateMapForZip(int zipcode) {
 
-        ArrayList<myapp> locations = DataService.getInstance().getBootcampLocationWithin10MilesofZip(zipcode);
+        parkingapp task = (parkingapp) getContext();
+        ArrayList<parking> locations = task.getBootcampLocationWithin10MilesofZip(zipcode);
 
         for (int x = 0; x < locations.size(); x++) {
-            myapp loc = locations.get(x);
+            parking loc = locations.get(x);
             MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(),loc.getLongitude()));
             marker.title(loc.getLocationTitle());
             marker.snippet(loc.getLocationAddress());
@@ -226,5 +236,14 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 //    }
 
 
+
+    private void hideList() {
+        getActivity().getSupportFragmentManager().beginTransaction().hide(mListFragment).commit();
+    }
+
+    private void showList() {
+        getActivity().getSupportFragmentManager().beginTransaction().show(mListFragment).commit();
+
+    }
 
 }
