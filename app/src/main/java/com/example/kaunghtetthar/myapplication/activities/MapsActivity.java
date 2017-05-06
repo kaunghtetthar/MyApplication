@@ -36,6 +36,7 @@ import com.example.kaunghtetthar.myapplication.DAOs.OnlineParkingDAO;
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.fragments.parking_list;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.example.kaunghtetthar.myapplication.fragments.placepicker;
 
 import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
@@ -49,6 +50,8 @@ import com.example.kaunghtetthar.myapplication.fragments.placepicker;
 =======
 import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of a2c96b8... hello error
 import com.example.kaunghtetthar.myapplication.locationroutedirectionmapv2.DirectionsJSONParser;
 import com.example.kaunghtetthar.myapplication.model.parking;
 import com.google.android.gms.common.ConnectionResult;
@@ -119,6 +122,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     private static final double RANGE = 0.001;
     private IParkingDAO parkingDAO;
 <<<<<<< HEAD
+<<<<<<< HEAD
     private final static int PLACE_PICKER_REQUEST = 1;
 //    private PlacePicker placepicker1;
     private placepicker mplacepicker;
@@ -126,6 +130,12 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     double currentlng;
     double currentalti;
 =======
+=======
+
+    double currentlat;
+    double currentlng;
+    double currentalti;
+>>>>>>> parent of a2c96b8... hello error
 
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
     public static int y;
@@ -145,10 +155,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 =======
     private SensorManager mSensorManager;
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
-
-
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-    private final static int MY_PERMISSION_FINE_LOCATION = 101;
 
 
 
@@ -274,6 +280,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         hideList();
     }
 
+<<<<<<< HEAD
 
 
 <<<<<<< HEAD
@@ -332,6 +339,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         return  list;
     }
 
+=======
+>>>>>>> parent of a2c96b8... hello error
 
 
 
@@ -611,6 +620,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
@@ -618,6 +628,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
     }
 
+=======
+>>>>>>> parent of a2c96b8... hello error
 =======
 >>>>>>> parent of a2c96b8... hello error
     class CustomTimerTask extends TimerTask {
@@ -1125,6 +1137,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 >>>>>>> parent of 37b1e00... apk
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 mSelectedMarker = mMap.addMarker(new MarkerOptions().
                         position(latLng).title("Current location : " + latLng.latitude + "," + latLng.longitude));
 =======
@@ -1193,10 +1206,14 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 >>>>>>> parent of 37b1e00... apk
 =======
 
+=======
+
+>>>>>>> parent of a2c96b8... hello error
         if (mSelectedMarker != null) {
 
             mSelectedMarker.remove();
 
+<<<<<<< HEAD
         } else {
             mSelectedMarker = mMap.addMarker(new MarkerOptions().
 <<<<<<< HEAD
@@ -1207,6 +1224,12 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
         }
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+        }
+
+            mSelectedMarker = mMap.addMarker(new MarkerOptions().
+                    position(new LatLng(location.getLatitude(), location.getLongitude())).title("Current location : " + latLng.latitude + "," + latLng.longitude));
+>>>>>>> parent of a2c96b8... hello error
 
         Timer timer = new Timer();
         TimerTask updateProfile = new CustomTimerTask(MapsActivity.this);
@@ -1377,6 +1400,25 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 
                 final Marker maker = mMap.addMarker(marker);
+<<<<<<< HEAD
+=======
+
+
+
+
+                // IF connection fail, reload marker again
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (maker != null) {
+                            maker.remove();
+                        }
+                        //add a marker to google map
+                        mMap.addMarker(marker);
+                    }
+                });
+>>>>>>> parent of a2c96b8... hello error
 
 
 
