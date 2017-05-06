@@ -231,7 +231,7 @@ public class vlcStreaming extends Activity implements IVideoPlayer {
                 public void run() {
                     new freespaceTask().execute();
                 }
-            },5000);
+            },10000);
 
 
            super.onPostExecute(result);
