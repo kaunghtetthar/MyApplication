@@ -36,7 +36,11 @@ import com.example.kaunghtetthar.myapplication.DAOs.OnlineParkingDAO;
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.fragments.parking_list;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.example.kaunghtetthar.myapplication.fragments.placepicker;
+=======
+import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 =======
 import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
@@ -113,6 +117,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     private static final double RANGE = 0.001;
     private IParkingDAO parkingDAO;
 <<<<<<< HEAD
+<<<<<<< HEAD
     private final static int PLACE_PICKER_REQUEST = 1;
 //    private PlacePicker placepicker1;
     private placepicker mplacepicker;
@@ -121,6 +126,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     double currentalti;
    TextView zipText;
      LatLng l;
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 =======
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
 
@@ -132,10 +139,13 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
     // device sensor manager
     private SensorManager mSensorManager;
+<<<<<<< HEAD
 
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private final static int MY_PERMISSION_FINE_LOCATION = 101;
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 
 
 
@@ -370,6 +380,34 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 
 
+    final String url = "https://maps.googleapis.com/maps/api/geocode/json?address=Oxford%20University,%20uk&sensor=false" ;
+    final String url1 = "http://192.168.0.101:8000/parking/parkingtext.json" ;
+
+    int final1;
+    int final2;
+
+    public ArrayList<parking> getBootcampLocationWithin10MilesofZip() {
+
+
+        final ArrayList<parking> list = new ArrayList<>();
+
+
+
+//                    list.add(new parking(14.078040f, 100.614946f, "free spaces : ", final1, "On the Campus : ", "AIT car parking", "car_icon", "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"));
+//                    list.add(new parking(14.080393f, 100.612730f, "free spaces : ", 3, "On the Campus : ", "CSIM car parking", "car_icon", "http://techslides.com/demos/sample-videos/small.mp4"));
+//                    list.add(new parking(14.078857f, 100.611335f, "free soaces : ", 5, "On the Campus : ", "AIT Library parking", "car_icon", "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov"));
+
+
+
+
+        return  list;
+    }
+
+
+
+
+
+
 
     public void onMapPolyline() {
 
@@ -463,6 +501,11 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     }
 
 
+=======
+
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
+    }
 
     class CustomTimerTask extends TimerTask {
         private Context context;
@@ -658,6 +701,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             ParserTask parserTask = new ParserTask();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 ParserTask parserTask = new ParserTask();
                 Double destLat = Double.valueOf(getIntent().getExtras().getString("lat"));
                 Double destLng = Double.valueOf(getIntent().getExtras().getString("lng"));
@@ -733,6 +777,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
                 // Invokes the thread for parsing the JSON data
                 parserTask.execute(result);
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 =======
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
 
@@ -876,13 +922,24 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         mDeclination += field.getDeclination();
 
        
+<<<<<<< HEAD
 
                 mSelectedMarker = mMap.addMarker(new MarkerOptions().
                         position(latLng).title("Current location : " + latLng.latitude + "," + latLng.longitude));
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 
 
 <<<<<<< HEAD
 
+=======
+        } else {
+            mSelectedMarker = mMap.addMarker(new MarkerOptions().
+                    position(latLng).title("Current location : " + latLng.latitude + "," + latLng.longitude));
+
+<<<<<<< HEAD
+        }
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 =======
         } else {
             mSelectedMarker = mMap.addMarker(new MarkerOptions().
@@ -1044,6 +1101,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon)).position(position).
                         title(parking.toString()).
 <<<<<<< HEAD
+<<<<<<< HEAD
                         snippet(parking.getLocationAddress());
 
 
@@ -1051,6 +1109,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 final Marker maker = mMap.addMarker(marker);
                 mMap.addMarker(marker);
 
+=======
+                        snippet(parking.getLocationAddress()));
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 =======
                         snippet(parking.getLocationAddress()));
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
