@@ -11,3 +11,7 @@
 volley/
 
 *.xml
+
+app/src/main/res/layout/fragment_main.xml
+
+app/src/main/java/com/example/kaunghtetthar/myapplication/activities/MapsActivity.java
