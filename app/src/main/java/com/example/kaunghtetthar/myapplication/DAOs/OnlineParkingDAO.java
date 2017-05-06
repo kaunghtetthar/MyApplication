@@ -162,7 +162,6 @@ public class OnlineParkingDAO implements IParkingDAO {
                     parking.setFreespaces(jsonParking.getInt("freespace"));
                     parking.setVideoStreaming(jsonParking.getString("url"));
                     parking.setLocationAddress(jsonParking.getString("name"));
-                    parking.setTotalslots(jsonParking.getInt("totalslots"));
 
                     Log.v("FUN5" , "latlng :" + jsonParking.getDouble("lat"));
 

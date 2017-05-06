@@ -1,13 +1,11 @@
 package com.example.kaunghtetthar.myapplication.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.GeomagneticField;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -24,10 +22,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
-import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +35,7 @@ import com.example.kaunghtetthar.myapplication.DAOs.IParkingDAO;
 import com.example.kaunghtetthar.myapplication.DAOs.OnlineParkingDAO;
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.fragments.parking_list;
+<<<<<<< HEAD
 import com.example.kaunghtetthar.myapplication.fragments.placepicker;
 
 import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
@@ -49,6 +46,9 @@ import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
 
 import com.example.kaunghtetthar.myapplication.fragments.placepicker;
 
+=======
+import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 import com.example.kaunghtetthar.myapplication.locationroutedirectionmapv2.DirectionsJSONParser;
 import com.example.kaunghtetthar.myapplication.model.parking;
 import com.google.android.gms.common.ConnectionResult;
@@ -85,46 +85,66 @@ import java.util.TimerTask;
 import static com.example.kaunghtetthar.myapplication.R.id.sign_in;
 
 
-public class MapsActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener, SensorEventListener,
+public class MapsActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener,
         OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener, GoogleApiClient.ConnectionCallbacks, LocationListener {
 
     final int PERMISSION_LOCATION = 111;
 
     private GoogleApiClient mGoogleApiClient;
+    private MapsActivity mainFragment;
+    private float[] mRotationMatrix = new float[16];
     private Button go;
     private GoogleMap mMap;
+    boolean markerClicked;
     private MarkerOptions userMarker;
     private Marker mSelectedMarker;
     float mDeclination;
+    private EditText etOrigin;
+    private EditText etDestination;
+    ArrayList<LatLng> markerPoints;
+    private List<Marker> originMarkers = new ArrayList<>();
+    private List<Marker> destinationMarkers = new ArrayList<>();
+    private List<Polyline> polylinePaths = new ArrayList<>();
+    private ProgressDialog progressDialog;
+    Context context;
     TextView distance1;
 //    private SensorManager mSensorManager;
     TextView duration1;
     public Button send;
     private parking_list mListFragment;
     ListView listview;
-    TextView freespace;
+    TextView text;
+    private parkingstreaming mStreaming;
+    ContatsAdapter contatsAdapter;
     private static final double RANGE = 0.001;
     private IParkingDAO parkingDAO;
+<<<<<<< HEAD
     private final static int PLACE_PICKER_REQUEST = 1;
 //    private PlacePicker placepicker1;
     private placepicker mplacepicker;
     double currentlat;
     double currentlng;
     double currentalti;
+=======
+
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
     public static int y;
-    private float go1;
 
 
     // record the compass picture angle turned
     private float currentDegree = 0f;
 
     // device sensor manager
+<<<<<<< HEAD
 
     private SensorManager mSensorManager;
 
     private SensorManager SM;
     private Sensor mySensor;
     private Float xvalue, yvalue, zvalue;
+=======
+    private SensorManager mSensorManager;
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -152,18 +172,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
 
-
-        // Create our Sensor manager
-        SM = (SensorManager) getSystemService(SENSOR_SERVICE);
-
-        // Accelerometer Sensor
-        mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-
         // Initializing
         distance1 = (TextView) findViewById(R.id.distance1);
         duration1 = (TextView) findViewById(R.id.duration1);
-        freespace = (TextView) findViewById(R.id.free_space);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
@@ -266,6 +277,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
     final String url = "https://maps.googleapis.com/maps/api/geocode/json?address=Oxford%20University,%20uk&sensor=false" ;
     final String url1 = "http://192.168.0.101:8000/parking/parkingtext.json" ;
 
@@ -294,6 +308,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 
 
+<<<<<<< HEAD
     final String url = "https://maps.googleapis.com/maps/api/geocode/json?address=Oxford%20University,%20uk&sensor=false" ;
     final String url1 = "http://192.168.0.101:8000/parking/parkingtext.json" ;
 
@@ -464,6 +479,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 =======
 >>>>>>> parent of 37b1e00... apk
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 
     public void onMapPolyline() {
 
@@ -471,6 +488,11 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
         Bundle bundle =  getIntent().getParcelableExtra("go");
         LatLng godrive = bundle.getParcelable("LatLng");
+
+
+//        myapp loc = locations.get(go);
+//
+//        MarkerOptions marker = new MarkerOptions().position(new LatLng(loc.getLatitude(), loc.getLongitude()));
 
 
 
@@ -492,22 +514,21 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
     }
 
-//
-//    // Compare Marker variable instead of MyMarker
-//    @Override
-////    public boolean equals(Object o) {
-////        return o != null && o.equals(mSelectedMarker);
-////    }
+
+    // Compare Marker variable instead of MyMarker
+    @Override
+    public boolean equals(Object o) {
+        return o != null && o.equals(mSelectedMarker);
+    }
 
 
     @Override
     public boolean onMarkerClick(Marker marker) {
 
         if (null != mSelectedMarker) {
+
             mSelectedMarker = marker;
-
         }
-
 
 
         return false;
@@ -527,20 +548,31 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
     public void setUserMarker(LatLng latLng) {
         if (userMarker == null) {
-            userMarker = new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.arrow_icon)).
-            title("Current location : " + latLng.latitude + "," + latLng.longitude);
+            userMarker = new MarkerOptions().position(latLng).title("Current location : " + latLng.latitude + "," + latLng.longitude);
             mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-
 
             Log.v("DOG", "Current location: " + latLng.latitude + " Long: " + latLng.longitude);
         }
 
+//        try {
+//
+//            Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
+//            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+//            int zip = Integer.parseInt(addresses.get(0).getPostalCode());
+//            updateMapForZip(zip);
+//        } catch (IOException exception) {
+//
+//        }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 //        Timer timer = new Timer();
 //        TimerTask updateprofile = new CustomTimerTask(MapsActivity.this);
 //        timer.scheduleAtFixedRate(updateprofile, 10, 5000);
 //        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -571,10 +603,11 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
     }
 >>>>>>> parent of 37b1e00... apk
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
     }
 
 <<<<<<< HEAD
@@ -608,27 +641,27 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-//                            final Handler handler = new Handler();
-//                            final long start = SystemClock.uptimeMillis();
-//                            final long duration = 3000;
-//
-//                            final Interpolator interpolator = new BounceInterpolator();
-//
-//                            handler.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    long elapsed = SystemClock.uptimeMillis() - start;
-//                                    float t = Math.max(
-//                                            1 - interpolator.getInterpolation((float) elapsed
-//                                                    / duration), 0);
-//                                    mSelectedMarker.setAnchor( 0.5f, 1f*t);
-//
-//                                    if (t > 0.0) {
-//                                        // Post again 16ms later.
-//                                        handler.postDelayed(this, 16);
-//                                    }
-//                                }
-//                            });
+                            final Handler handler = new Handler();
+                            final long start = SystemClock.uptimeMillis();
+                            final long duration = 3000;
+
+                            final Interpolator interpolator = new BounceInterpolator();
+
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    long elapsed = SystemClock.uptimeMillis() - start;
+                                    float t = Math.max(
+                                            1 - interpolator.getInterpolation((float) elapsed
+                                                    / duration), 0);
+                                    mSelectedMarker.setAnchor(0.5f, 0.1f+1*t);
+
+                                    if (t > 0.0) {
+                                        // Post again 16ms later.
+                                        handler.postDelayed(this, 16);
+                                    }
+                                }
+                            });
                         }
                     });
                 }
@@ -703,6 +736,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 //    @Override
 //    public void onSensorChanged(SensorEvent event) {
 //
@@ -731,6 +767,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 //
 //
 //    }
+<<<<<<< HEAD
 //<<<<<<< HEAD
 //<<<<<<< HEAD
 //<<<<<<< HEAD
@@ -791,7 +828,30 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 //        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(pos), 24, callback);
 //    }
 
+=======
 
+    private void updateCamera(float bearing) {
+        CameraPosition oldPos = mMap.getCameraPosition();
+        CameraPosition pos = CameraPosition.builder(oldPos).bearing(bearing).build();
+        GoogleMap.CancelableCallback callback = new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        };
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(pos), 24, callback);
+    }
+
+//    @Override
+//    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//
+//    }
 
     // Fetches data from url passed
     private class DownloadTask extends AsyncTask<String, Void, String>{
@@ -817,6 +877,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+<<<<<<< HEAD
                 ParserTask parserTask = new ParserTask();
                 Double destLat = Double.valueOf(getIntent().getExtras().getString("lat"));
                 Double destLng = Double.valueOf(getIntent().getExtras().getString("lng"));
@@ -910,7 +971,14 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
 =======
 >>>>>>> parent of 37b1e00... apk
+=======
 
+            ParserTask parserTask = new ParserTask();
+
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+
+            // Invokes the thread for parsing the JSON data
+            parserTask.execute(result);
         }
     }
 
@@ -1024,17 +1092,11 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
 
-        currentlat = latitude;
-        currentlng = longitude;
-
-
         // create an instance of the ParkingSearchTask
         ParkingSearchTask pst = new ParkingSearchTask();
 
         //start the PST thread
         pst.execute(latitude, longitude, RANGE);
-
-
 
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -1047,9 +1109,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 System.currentTimeMillis()
         );
 
-
         mDeclination += field.getDeclination();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
        
 <<<<<<< HEAD
@@ -1099,6 +1161,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 
         if (mSelectedMarker != null) {
+=======
+       
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 
             mSelectedMarker.remove();
 
@@ -1132,11 +1197,16 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
             mSelectedMarker.remove();
 
-        }
-
+        } else {
             mSelectedMarker = mMap.addMarker(new MarkerOptions().
+<<<<<<< HEAD
                     position(new LatLng(location.getLatitude(), location.getLongitude())).title("Current location : " + latLng.latitude + "," + latLng.longitude));
 >>>>>>> parent of a2c96b8... hello error
+=======
+                    position(latLng).title("Current location : " + latLng.latitude + "," + latLng.longitude));
+
+        }
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
 
         Timer timer = new Timer();
         TimerTask updateProfile = new CustomTimerTask(MapsActivity.this);
@@ -1207,22 +1277,23 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         super.onStart();
     }
 //
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // for the system's orientation sensor registered listeners
-        SM.registerListener(this, SM.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-                SensorManager.SENSOR_DELAY_GAME);
-
-
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        // for the system's orientation sensor registered listeners
+//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+//                SensorManager.SENSOR_DELAY_GAME);
 //
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SM.unregisterListener(this);
-
-    }
+//
+//
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        mSensorManager.unregisterListener(this);
+//
+//    }
 
     @Override
     protected void onStop() {
@@ -1281,19 +1352,15 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         // onPostExecute runs in the main/UI thread, and thus,
         // has access to UI objects
 
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
         @Override
         protected void onPostExecute(List<parking> result) {
-            for (final parking parking: result) {
+            for (parking parking: result) {
                 LatLng position = new LatLng(parking.getLatitude(), parking.getLongitude());
 
-                final MarkerOptions marker = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon)).position(position).
+                //add a marker to the map
+                mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon)).position(position).
                         title(parking.toString()).
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1351,11 +1418,10 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
 =======
 >>>>>>> parent of 37b1e00... apk
+=======
+                        snippet(parking.getLocationAddress()));
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
             }
-
-
-
-
 
         }
 
