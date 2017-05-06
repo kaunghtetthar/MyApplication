@@ -137,6 +137,7 @@
             android:textSize="30dp"
             android:layout_alignParentStart="true" />
 
+<<<<<<< HEAD
 
 
 <<<<<<< HEAD
@@ -156,13 +157,9 @@
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
 =======
 >>>>>>> parent of 37b1e00... apk
+=======
+>>>>>>> parent of a2c96b8... hello error
     </RelativeLayout>
 
-
-    <fragment
-        android:id="@+id/place_autocomplete_fragment"
-        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </FrameLayout>

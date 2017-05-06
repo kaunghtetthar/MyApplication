@@ -2,7 +2,6 @@ package com.example.kaunghtetthar.myapplication.activities;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.GeomagneticField;
@@ -12,7 +11,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -22,6 +20,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,6 +30,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +39,7 @@ import com.example.kaunghtetthar.myapplication.DAOs.IParkingDAO;
 import com.example.kaunghtetthar.myapplication.DAOs.OnlineParkingDAO;
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.fragments.parking_list;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -65,16 +66,15 @@ import com.example.kaunghtetthar.myapplication.fragments.parkingstreaming;
 =======
 import com.example.kaunghtetthar.myapplication.fragments.placepicker;
 >>>>>>> parent of 37b1e00... apk
+=======
+>>>>>>> parent of a2c96b8... hello error
 import com.example.kaunghtetthar.myapplication.locationroutedirectionmapv2.DirectionsJSONParser;
 import com.example.kaunghtetthar.myapplication.model.parking;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -125,6 +125,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     private static final double RANGE = 0.001;
     private IParkingDAO parkingDAO;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -135,11 +136,12 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     private final static int PLACE_PICKER_REQUEST = 1;
 //    private PlacePicker placepicker1;
     private placepicker mplacepicker;
+=======
+
+>>>>>>> parent of a2c96b8... hello error
     double currentlat;
     double currentlng;
     double currentalti;
-   TextView zipText;
-     LatLng l;
 
 <<<<<<< HEAD
 =======
@@ -173,6 +175,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 >>>>>>> parent of 37b1e00... apk
 
 
+<<<<<<< HEAD
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private final static int MY_PERMISSION_FINE_LOCATION = 101;
 
@@ -186,6 +189,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
 
 
+=======
+>>>>>>> parent of a2c96b8... hello error
 
 
     public MapsActivity() {
@@ -241,68 +246,33 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
         }
 
-//        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-//                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//            @Override
-//            public void onPlaceSelected(Place place) {
-//                // TODO: Get info about the selected place.
-//                Log.i("TAG", "Place: " + place.getName());
-//            }
-//
-//            @Override
-//            public void onError(Status status) {
-//                // TODO: Handle the error.
-//                Log.i("TAG", "An error occurred: " + status);
-//            }
-//        });
-
-//        placepicker();
 
 
-//        placeBuilder();
 
 
-         zipText = (TextView) findViewById(R.id.zip_text);
 
-//        requestPermission();
-//        zipText.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//
-//                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-//                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-//                    try {
-//                        Intent intent = builder.build(MapsActivity.this);
-//                        startActivityForResult(intent, PLACE_PICKER_REQUEST);
-//                    } catch (GooglePlayServicesRepairableException e) {
-//                        e.printStackTrace();
-//                    } catch (GooglePlayServicesNotAvailableException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                hidekeyboard();
-//             return false;
-//            }
-//
-//        });
+        final EditText zipText = (EditText) findViewById(R.id.zip_text);
+        zipText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-//        zipText.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-//                try {
-//                    Intent intent = builder.build(MapsActivity.this);
-//                    startActivityForResult(intent, PLACE_PICKER_REQUEST);
-//                } catch (GooglePlayServicesRepairableException e) {
-//                    e.printStackTrace();
-//                } catch (GooglePlayServicesNotAvailableException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        });
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+
+                    //You should make sure this is a valid zip code
+                    String text = zipText.getText().toString();
+                    int zip = Integer.parseInt(text);
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
+                    showList();
+                    return true;
+                }
+                hidekeyboard();
+             return false;
+            }
+
+        });
+
 
 
 
@@ -354,49 +324,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         hideList();
     }
 
-    private void requestPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_FINE_LOCATION);
-            }
-        }
-
-    }
-
-
-    public void placepicker() {
-
-        try {
-            Intent intent =
-                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            .build(this);
-            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException e) {
-            // TODO: Handle the error.
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
-        }
-    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-//            if (resultCode == RESULT_OK) {
-//                Place place = PlaceAutocomplete.getPlace(MapsActivity.this, data);
-//                Log.i("TAG", "Place: " + place.getLatLng());
-//               l = place.getLatLng();
-//                final MarkerOptions marker1 = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon)).position(l);
-//                mMap.addMarker(marker1);
-//            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-//                Status status = PlaceAutocomplete.getStatus(MapsActivity.this, data);
-//                // TODO: Handle the error.
-//                Log.i("TAG", status.getStatusMessage());
-//
-//            } else if (resultCode == RESULT_CANCELED) {
-//                // The user canceled the operation.
-//            }
-//        }
-//    }
 
 
 <<<<<<< HEAD
@@ -711,6 +638,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
     }
 
+<<<<<<< HEAD
 
 
 
@@ -718,6 +646,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
     }
 
+=======
+>>>>>>> parent of a2c96b8... hello error
     class CustomTimerTask extends TimerTask {
         private Context context;
         private Handler mHandler = new Handler();
@@ -998,7 +928,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 mSelectedMarker = mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.arrow_icon)).
                         position(curloc).title("Current location : " + curloc.latitude + "," + curloc.longitude));
 
-                 mSelectedMarker.setRotation(-90);
+            mSelectedMarker.setRotation(-90);
 
 
 //                mSelectedMarker.setRotation(go1);
@@ -1025,6 +955,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                                     mSelectedMarker.setPosition(curloc);
                                     CameraPosition camera = new CameraPosition(curloc, 15, 0, xvalue);
                                     mMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
+
                                     if (t > 0.0) {
                                         // Post again 16ms later.
                                         handler.postDelayed(this, 16);
@@ -1164,12 +1095,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     @Override
     public void onLocationChanged(Location location) {
         Log.v("DOG", "Long:" + location.getLongitude() + " - Lat:" + location.getLatitude());
-        if (l != null) {
-            setUserMarker(l);
-        } else {
-            setUserMarker(new LatLng(location.getLatitude(), location.getLongitude()));
-
-        }
+        setUserMarker(new LatLng(location.getLatitude(), location.getLongitude()));
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         double latitude = location.getLatitude();
@@ -1213,6 +1139,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 >>>>>>> parent of 37b1e00... apk
 
+<<<<<<< HEAD
                 mSelectedMarker = mMap.addMarker(new MarkerOptions().
                         position(latLng).title("Current location : " + latLng.latitude + "," + latLng.longitude));
 =======
@@ -1276,6 +1203,17 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
 =======
 >>>>>>> parent of 37b1e00... apk
+=======
+
+        if (mSelectedMarker != null) {
+
+            mSelectedMarker.remove();
+
+        }
+
+            mSelectedMarker = mMap.addMarker(new MarkerOptions().
+                    position(new LatLng(location.getLatitude(), location.getLongitude())).title("Current location : " + latLng.latitude + "," + latLng.longitude));
+>>>>>>> parent of a2c96b8... hello error
 
         Timer timer = new Timer();
         TimerTask updateProfile = new CustomTimerTask(MapsActivity.this);
@@ -1447,8 +1385,24 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 
 
+
                 final Marker maker = mMap.addMarker(marker);
-                mMap.addMarker(marker);
+
+
+
+
+                // IF connection fail, reload marker again
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (maker != null) {
+                            maker.remove();
+                        }
+                        //add a marker to google map
+                        mMap.addMarker(marker);
+                    }
+                });
 
 <<<<<<< HEAD
 =======

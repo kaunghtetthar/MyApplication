@@ -15,24 +15,12 @@
         android:id="@+id/imageView" />
 
     <Button
+        android:text="Map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/find_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/find_special"
-        android:layout_alignLeft="@+id/find_special"
-        android:layout_alignRight="@+id/find_special"
-        android:layout_alignStart="@+id/find_special"
         android:layout_below="@+id/imageView"
-        android:layout_marginTop="14dp"
-        android:text="Near" />
-
-    <Button
-        android:id="@+id/find_special"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/find_map"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
-        android:text="Check" />
+        android:layout_marginTop="14dp" />
 
 </RelativeLayout>
