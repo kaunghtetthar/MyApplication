@@ -13,3 +13,4 @@ public class Distance {
         this.value = value;
     }
 }
+

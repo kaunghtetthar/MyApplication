@@ -228,6 +228,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 .addApi(LocationServices.API)
                 .build();
 
+<<<<<<< HEAD
         SupportMapFragment mainFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(sign_in);
         mainFragment.getMapAsync(this);
@@ -1302,6 +1303,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             mSelectedMarker.remove();
 
         }
+=======
+>>>>>>> origin/master
 
 <<<<<<< HEAD
         if (mSelectedMarker != null) {

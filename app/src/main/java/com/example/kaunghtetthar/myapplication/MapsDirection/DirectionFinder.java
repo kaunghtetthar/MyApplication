@@ -153,4 +153,8 @@ public class DirectionFinder {
 
         return decoded;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master
