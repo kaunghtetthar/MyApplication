@@ -76,7 +76,8 @@
             android:layout_toRightOf="@+id/go"
             android:layout_toEndOf="@+id/go"
             android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp">
+            android:layout_marginStart="12dp"
+            android:id="@+id/linearLayout">
 
             <TextView
                 android:text="Distance"
@@ -102,6 +103,8 @@
 
         </LinearLayout>
 
+
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="300dp"
@@ -114,6 +117,12 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 37b1e00... apk
 
 
         <TextView
@@ -130,6 +139,7 @@
 
 
 
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
 =======
@@ -138,6 +148,14 @@
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
 =======
 >>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of 9a106d1... rotation with onsensorchanged
+=======
+>>>>>>> parent of 37b1e00... apk
     </RelativeLayout>
 
 
