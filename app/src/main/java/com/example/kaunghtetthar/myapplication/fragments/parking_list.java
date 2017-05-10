@@ -1,6 +1,5 @@
 package com.example.kaunghtetthar.myapplication.fragments;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -77,6 +76,9 @@ public class parking_list extends Fragment {
         adapter = new parkingAdapter(locations, parking_list.this);
 
 
+
+
+
 //        mListFragment = (parking_list) getChildFragmentManager().findFragmentByTag("FragToRefresh");
 //
 //
@@ -97,7 +99,6 @@ public class parking_list extends Fragment {
 
 
 
-    ProgressDialog progess;
 
 
     private class DoBackgroundTask extends AsyncTask<Integer, Void, Void> {
@@ -177,10 +178,13 @@ public class parking_list extends Fragment {
                         @Override
                         public void run() {
                             new DoBackgroundTask().execute();
+
                         }
                     },5000);
 
+
                     recyclerView.setAdapter(adapter);
+
                     adapter.notifyDataSetChanged();
 
                     super.onPostExecute(aVoid);

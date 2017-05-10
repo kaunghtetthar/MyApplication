@@ -30,6 +30,9 @@ public class parkingAdapter extends RecyclerView.Adapter<parkingviewholder> {
         this.notifyDataSetChanged();
     }
 
+
+
+
     public void clearAdapter() {
         int size = this.locations.size();
         this.locations.clear();
@@ -44,7 +47,7 @@ public class parkingAdapter extends RecyclerView.Adapter<parkingviewholder> {
 
     @Override
     public void onBindViewHolder(parkingviewholder holder, int position) {
-        final parking location = locations.get(position);
+        parking location = locations.get(position);
         holder.updateUI(location);
 
         //To avoid reload item for holder
