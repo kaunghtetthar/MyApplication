@@ -47,6 +47,7 @@ public class parkingviewholder extends RecyclerView.ViewHolder {
         videoview = (VideoView) itemView.findViewById(R.id.myVideo);
         context = itemView.getContext();
 
+
     }
 
     public void updateUI(final parking location) {
@@ -99,6 +100,7 @@ public class parkingviewholder extends RecyclerView.ViewHolder {
                 intent.putExtra("go", args);
                 intent.putExtra("lat", latitude);
                 intent.putExtra("lng", longitude);
+                intent.putExtra("freespace", location.toString());
                 intent.putExtra("go", args);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);

@@ -1,6 +1,7 @@
 package com.example.kaunghtetthar.myapplication.locationroutedirectionmapv2;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.PolyUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,7 +62,7 @@ public class DirectionsJSONParser {
                     for(int k=0;k<jSteps.length();k++){
                         String polyline = "";
                         polyline = (String)((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
-                        List<LatLng> list = decodePoly(polyline);
+                        List<LatLng> list = PolyUtil.decode(polyline);
 
                         /** Traversing all points */
                         for(int l=0;l<list.size();l++){

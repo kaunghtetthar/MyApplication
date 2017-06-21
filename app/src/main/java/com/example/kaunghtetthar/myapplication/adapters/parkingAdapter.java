@@ -44,11 +44,15 @@ public class parkingAdapter extends RecyclerView.Adapter<parkingviewholder> {
         this.notifyItemRangeInserted(0, locations.size() - 1);
     }
 
+    public void getItem(int poistion) {
+        this.locations.get(poistion);
+    }
 
     @Override
     public void onBindViewHolder(parkingviewholder holder, int position) {
         parking location = locations.get(position);
         holder.updateUI(location);
+
 
         //To avoid reload item for holder
         holder.setIsRecyclable(false);

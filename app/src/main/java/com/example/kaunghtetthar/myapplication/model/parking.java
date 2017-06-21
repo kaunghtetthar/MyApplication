@@ -127,8 +127,15 @@ public class parking {
 
     public String toString() {
 
-    return "Totalslots :  " + totalslots + "    Freespace :  " + freespaces ;
+    return  freespaces + "  /  " +  totalslots;
 
 
         }
+
+    public String nourl() {
+
+        return  " No parking data ";
+
+
+    }
 }

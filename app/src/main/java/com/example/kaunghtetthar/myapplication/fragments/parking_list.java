@@ -1,5 +1,6 @@
 package com.example.kaunghtetthar.myapplication.fragments;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class parking_list extends Fragment {
@@ -34,6 +36,8 @@ public class parking_list extends Fragment {
     private parking_list mListFragment;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private int id = 0;
+    private static String url;
 
 
 
@@ -57,6 +61,13 @@ public class parking_list extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_parking_list, container, false);
+        Bundle bundle= getArguments();
+
+            id = bundle.getInt("url");
+            url = "http://192.168.0.101:8000/freespacejson.php?id=" + id;
+            Log.v("TAG8", "id +  :"  + id);
+
+
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_locations);
         recyclerView.setHasFixedSize(true);
@@ -101,20 +112,23 @@ public class parking_list extends Fragment {
 
 
 
-    private class DoBackgroundTask extends AsyncTask<Integer, Void, Void> {
+    private class DoBackgroundTask extends AsyncTask<Integer, Void, List<parking>> {
 
 
+                ProgressDialog myPd_bar;
+                String url = parking_list.url;
 
                      @Override
                      protected void onPreExecute() {
 //                           recyclerView.setAdapter(null);
+                         // Access a NetworkDAO for low level networking functions.
+
                          super.onPreExecute();
                      }
 
                 @Override
-                protected Void doInBackground(Integer... integers) {
+                protected List<parking> doInBackground(Integer... integers) {
 
-                    String url = "http://192.168.0.101:8000/results.json";
 
                     locations.clear();
                     // Access a NetworkDAO for low level networking functions.
@@ -146,6 +160,7 @@ public class parking_list extends Fragment {
                             parking.setParkingid(jsonParking.getInt("id"));
                             parking.setFreespacesTitle("freespaces :");
                             parking.setTotalslotsTitle("Totalslots :");
+                            parking.setParkingid(jsonParking.getInt("id"));
 
                             Log.v("FUN5", "freespace :" + jsonParking.getInt("freespace"));
                             parking.setVideoStreaming(jsonParking.getString("url"));
@@ -155,15 +170,12 @@ public class parking_list extends Fragment {
 
                             // add the parking object to our results.
                             locations.add(parking);
-
-
                         }
+
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-
 
                     return null;
                 }
@@ -172,7 +184,7 @@ public class parking_list extends Fragment {
 
 
                 @Override
-                protected void onPostExecute(Void aVoid) {
+                protected void onPostExecute(List<parking> aVoid) {
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -180,12 +192,14 @@ public class parking_list extends Fragment {
                             new DoBackgroundTask().execute();
 
                         }
-                    },5000);
+                    },3000);
+
+                        recyclerView.setAdapter(adapter);
 
 
-                    recyclerView.setAdapter(adapter);
 
-                    adapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();
+
 
                     super.onPostExecute(aVoid);
 

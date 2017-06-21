@@ -132,7 +132,7 @@ public class OnlineParkingDAO implements IParkingDAO {
 
         ArrayList<parking> parkingResults = new ArrayList<>();
 
-        String url = "http://192.168.0.101:8000/results.json";
+        String url = "http://192.168.0.104:8000/results.json";
 
 
 
@@ -165,7 +165,7 @@ public class OnlineParkingDAO implements IParkingDAO {
                     parking.setVideoStreaming(jsonParking.getString("url"));
                     parking.setLocationAddress(jsonParking.getString("name"));
                     parking.setTotalslots(jsonParking.getInt("totalslots"));
-
+                    parking.setParkingid(jsonParking.getInt("id"));
                     Log.v("FUN5" , "latlng :" + jsonParking.getDouble("lat"));
 
 
