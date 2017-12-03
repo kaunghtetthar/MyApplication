@@ -170,7 +170,7 @@ public class vlcStreaming extends Activity implements IVideoPlayer {
         protected ArrayList<parking> doInBackground(Integer... params) {
 
             ArrayList<parking> parkingResults = new ArrayList<>();
-                String url = "http://192.168.0.101:8000/freespacejson.php?id=" + id;
+                String url = "http://kaunghtet912.kcnloveanime.com/freespacejson.php?id=" + id;
 
 //                locations.clear();
                 // Access a NetworkDAO for low level networking functions.
@@ -179,7 +179,9 @@ public class vlcStreaming extends Activity implements IVideoPlayer {
                 try {
 
                     //make the request
-                    String parkingdata = networkDAO.request(url);
+                    String parkingdataAll = networkDAO.request(url);
+                    String parkingdata = parkingdataAll.replace("<html>\n</html>","");
+
 
                     // Pass the data in a JsSON objects.
                     JSONArray jsonObject = new JSONArray(parkingdata);
@@ -231,7 +233,7 @@ public class vlcStreaming extends Activity implements IVideoPlayer {
                 public void run() {
                     new freespaceTask().execute();
                 }
-            },10000);
+            },5000);
 
 
            super.onPostExecute(result);

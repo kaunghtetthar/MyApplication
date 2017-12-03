@@ -64,7 +64,7 @@ public class parking_list extends Fragment {
         Bundle bundle= getArguments();
 
             id = bundle.getInt("url");
-            url = "http://192.168.0.101:8000/freespacejson.php?id=" + id;
+            url = "http://kaunghtet912.kcnloveanime.com/freespacejson.php?id=" + id;
             Log.v("TAG8", "id +  :"  + id);
 
 
@@ -137,7 +137,11 @@ public class parking_list extends Fragment {
                     try {
 
                         //make the request
-                        String parkingdata = networkDAO.request(url);
+                        String parkingdataAll = networkDAO.request(url);
+                        String parkingdata = parkingdataAll.replace("<html>\n</html>","");
+
+
+                        Log.v("TAG9", "id +  :"  + url);
 
                         // Pass the data in a JsSON objects.
                         JSONArray jsonObject = new JSONArray(parkingdata);
