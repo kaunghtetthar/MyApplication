@@ -32,18 +32,18 @@
                 <Button
                     android:id="@+id/watch_stream"
                     android:layout_width="104dp"
-                    android:layout_height="45dp"
-                    android:layout_weight="0.38"
+                    android:layout_height="38dp"
                     android:src="@drawable/cast_ic_notification_1"
-                    android:text="Camera View" />
+                    android:text="watch"
+                    android:layout_weight="0.17" />
 
                 <Button
                     android:id="@+id/go_drive"
                     android:layout_width="wrap_content"
-                    android:layout_height="45dp"
-                    android:layout_weight="0.38"
+                    android:layout_height="37dp"
                     android:src="@drawable/cast_ic_notification_0"
-                    android:text="go" />
+                    android:text="go"
+                    android:layout_weight="0.38" />
 
             </LinearLayout>
 

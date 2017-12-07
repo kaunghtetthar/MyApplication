@@ -8,8 +8,8 @@ import android.widget.Button;
 
 import com.example.kaunghtetthar.myapplication.R;
 import com.example.kaunghtetthar.myapplication.REST.Restful;
+import com.example.kaunghtetthar.myapplication.videostreaming.VideoStreaming;
 import com.example.kaunghtetthar.myapplication.VLC.vlcActivity;
-import com.example.kaunghtetthar.myapplication.VLC.vlctest;
 
 public class Firstpage extends Activity implements View.OnClickListener {
 
@@ -54,7 +54,7 @@ public class Firstpage extends Activity implements View.OnClickListener {
 
             case R.id.streaming:
                 startActivity(new Intent(Firstpage.this,
-                        vlctest.class));
+                        VideoStreaming.class));
                 break;
             case R.id.vlc:
                 startActivity(new Intent(Firstpage.this,
