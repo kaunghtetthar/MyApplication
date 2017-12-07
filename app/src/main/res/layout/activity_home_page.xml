@@ -18,10 +18,13 @@
         android:id="@+id/find_map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:text="Find nearby parking lots"
         android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
-        android:text="Find" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="63dp"
+        android:layout_marginEnd="63dp" />
 
     <Button
         android:id="@+id/find_special"
@@ -31,6 +34,6 @@
         android:layout_alignStart="@+id/find_map"
         android:layout_below="@+id/find_map"
         android:layout_marginTop="25dp"
-        android:text="Check" />
+        android:text="Check specific parking lot" />
 
 </RelativeLayout>
