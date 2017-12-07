@@ -1,17 +1,19 @@
 package com.example.kaunghtetthar.myapplication.videostreaming;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.example.kaunghtetthar.myapplication.R;
 
-public class VideoStreaming extends Activity {
+import org.videolan.libvlc.IVLCVout;
+
+public class VideoStreaming extends AppCompatActivity implements IVLCVout.OnNewVideoLayoutListener{
     // Declare variables
     ProgressDialog pDialog;
     VideoView videoview;
@@ -68,6 +70,11 @@ public class VideoStreaming extends Activity {
                 videoview.start();
             }
         });
+
+    }
+
+    @Override
+    public void onNewVideoLayout(IVLCVout vlcVout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen) {
 
     }
 }
