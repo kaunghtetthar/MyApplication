@@ -1,72 +1,35 @@
 package com.example.kaunghtetthar.myapplication.VLC;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Surface;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
-import com.example.kaunghtetthar.myapplication.DAOs.NetworkDAO;
 import com.example.kaunghtetthar.myapplication.R;
-import com.example.kaunghtetthar.myapplication.adapters.parkingAdapter;
-import com.example.kaunghtetthar.myapplication.fragments.parking_list;
-import com.example.kaunghtetthar.myapplication.model.parking;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.videolan.libvlc.IVLCVout;
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * Created by kaunghtetthar on 12/4/17.
+ */
 
-public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutListener {
-
-    private TextView freespace;
-    private TextView url;
-
-    private Surface mSurface = null;
-
-    private String mMediaUrl;
-    private String k;
-    private String freespace1;
-    private int id;
-
-    private ArrayList<parking> locations;
-    private parkingAdapter adapter;
-    private Handler handler;
-    private parking_list mListFragment;
-    private RecyclerView recyclerView;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-
-
-
+public class vlctest extends AppCompatActivity implements IVLCVout.OnNewVideoLayoutListener {
     private static final boolean USE_SURFACE_VIEW = true;
     private static final boolean ENABLE_SUBTITLES = true;
     private static final String TAG = "JavaActivity";
@@ -79,9 +42,7 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
     private static final int SURFACE_ORIGINAL = 5;
     private static int CURRENT_SIZE = SURFACE_BEST_FIT;
 
-
     private FrameLayout mVideoSurfaceFrame = null;
-    private Bitmap mImageCapture = null;
     private SurfaceView mVideoSurface = null;
     private SurfaceView mSubtitlesSurface = null;
     private TextureView mVideoTexture = null;
@@ -105,95 +66,14 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "VideoVLC -- onCreate -- START ------------");
+
         setContentView(R.layout.activity_vlc_test);
-
-        freespace = (TextView) findViewById(R.id.free_space);
-        freespace.setText(getIntent().getExtras().getString("freespace"));
-
-        url = (TextView) findViewById(R.id.url);
-
-        freespaceTask fT = new freespaceTask();
-        fT.execute(0);
-
-        locations = new ArrayList<>();
-        freespace1 = getIntent().getExtras().getString("freespace");
 
         final ArrayList<String> args = new ArrayList<>();
         args.add("-vvv");
         mLibVLC = new LibVLC(this,args);
         mMediaPlayer = new MediaPlayer(mLibVLC);
-        id = getIntent().getExtras().getInt("id");
-        mMediaUrl = getIntent().getExtras().getString("url");
 
-        play();
-
-
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(vlcStreaming.this, vlcStreaming.class);
-                intent.putExtra("url", mMediaUrl);
-                intent.putExtra("freespace", freespace1);
-                intent.putExtra("id", id);
-                startActivity(intent);
-                vlcStreaming.this.finish();
-            }
-        },30000);
-
-
-//
-
-    }
-
-//    public static void saveFrameLayout(FrameLayout frameLayout, String path) {
-//        frameLayout.setDrawingCacheEnabled(true);
-//        frameLayout.buildDrawingCache();
-//        Bitmap cache = frameLayout.getDrawingCache();
-//        try {
-//            FileOutputStream fileOutputStream = new FileOutputStream(path);
-//            cache.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-//            fileOutputStream.flush();
-//            fileOutputStream.close();
-//        } catch (Exception e) {
-//            // TODO: handle exception
-//        } finally {
-//            frameLayout.destroyDrawingCache();
-//        }
-//    }
-
-
-    public static Bitmap loadBitmapFromView(View v) {
-        Bitmap b = Bitmap.createBitmap( v.getLayoutParams().width, v.getLayoutParams().height, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-        v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
-        v.draw(c);
-        return b;
-    }
-
-    public static String encodeToBase64(Bitmap image)
-    {
-        Bitmap immagex=image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        boolean compress = immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
-
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-
-        Log.e("LOOK", imageEncoded);
-        return imageEncoded;
-    }
-
-    public static Bitmap decodeBase64(String input)
-    {
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
-
-
-
-    private void play(){
         mVideoSurfaceFrame = (FrameLayout) findViewById(R.id.video_surface_frame);
         if (USE_SURFACE_VIEW) {
             ViewStub stub = (ViewStub) findViewById(R.id.surface_stub);
@@ -212,9 +92,8 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
             mVideoTexture = (TextureView) stub.inflate();
             mVideoView = mVideoTexture;
         }
-
-
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -234,40 +113,19 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
         }
         else
             vlcVout.setVideoView(mVideoTexture);
-            vlcVout.attachViews(this);
+        vlcVout.attachViews(this);
 
-        Media media = new Media(mLibVLC, Uri.parse(mMediaUrl));
+        Media media = new Media(mLibVLC, Uri.parse(SAMPLE_URL));
         mMediaPlayer.setMedia(media);
         media.release();
         mMediaPlayer.play();
-
-
-
-
-        final Handler mHandler1 = new Handler();
-
-        mHandler1.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Media media = new Media(mLibVLC, Uri.parse(mMediaUrl));
-                        mMediaPlayer.setMedia(media);
-                        media.release();
-                        mMediaPlayer.play();
-
-
-                            // Post again 16ms later.
-                            mHandler1.postDelayed(this, 10000);
-
-            }
-        });
-
 
         if (mOnLayoutChangeListener == null) {
             mOnLayoutChangeListener = new View.OnLayoutChangeListener() {
                 private final Runnable mRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        //updateVideoSurfaces();
+                        updateVideoSurfaces();
                     }
                 };
                 @Override
@@ -377,7 +235,7 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
             lp.width  = ViewGroup.LayoutParams.MATCH_PARENT;
             lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
             mVideoSurfaceFrame.setLayoutParams(lp);
-            //changeMediaPlayerLayout(sw, sh);
+            changeMediaPlayerLayout(sw, sh);
             return;
         }
 
@@ -466,14 +324,6 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_parkinginfo, menu);
-        return true;
-    }
-
     @Override
     public void onNewVideoLayout(IVLCVout vlcVout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen) {
         mVideoWidth = width;
@@ -482,125 +332,7 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
         mVideoVisibleHeight = visibleHeight;
         mVideoSarNum = sarNum;
         mVideoSarDen = sarDen;
-//        updateVideoSurfaces();
+        updateVideoSurfaces();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void eventHardwareAccelerationError() {
-        Log.e(TAG, "eventHardwareAccelerationError()!");
-    }
-
-
-    public class freespaceTask extends AsyncTask<Integer, Void, List<parking>> {
-
-        // onPostExecute runs in the main/UI thread, and thus,
-        // has access to UI objects
-
-        @Override
-        protected void onPreExecute() {
-            freespace.setText(null);
-            super.onPreExecute();
-        }
-
-        @Override
-        protected ArrayList<parking> doInBackground(Integer... params) {
-
-            ArrayList<parking> parkingResults = new ArrayList<>();
-                String url = "http://kaunghtet912.kcnloveanime.com/freespacejson.php?id=" + id;
-
-//                locations.clear();
-                // Access a NetworkDAO for low level networking functions.
-                NetworkDAO networkDAO = new NetworkDAO();
-
-                try {
-
-                    //make the request
-                    String parkingdataAll = networkDAO.request(url);
-                    String parkingdata = parkingdataAll.replace("<html>\n</html>","");
-
-
-                    // Pass the data in a JsSON objects.
-                    JSONArray jsonObject = new JSONArray(parkingdata);
-
-//                    JSONObject jsonObject1 = new JSONObject("parking");
-
-
-                    for (int i = 0; i < jsonObject.length(); i++) {
-
-                        // get our json object from the array.
-                        JSONObject jsonParking = jsonObject.getJSONObject(i);
-
-                        Log.v("FUN10", "freespace :" + jsonParking);
-                    //create a new parking object.
-                    parking parking = new parking();
-
-                    parking.setLatitude(jsonParking.getDouble("lat"));
-                    parking.setLongitude(jsonParking.getDouble("long"));
-                    parking.setFreespaces(jsonParking.getInt("freespace"));
-                    parking.setTotalslots(jsonParking.getInt("totalslots"));
-                    parking.setFreespacesTitle("freespaces :");
-                    parking.setTotalslotsTitle("totalslots :");
-
-                    Log.v("FUN5", "freespace :" + jsonParking.getInt("freespace"));
-                    parking.setVideoStreaming(jsonParking.getString("url"));
-                    parking.setLocationAddress(jsonParking.getString("name"));
-
-                    Log.v("FUN5", "latlng :" + jsonParking.getDouble("lat"));
-
-                    // add the parking object to our results.
-                    parkingResults.add(parking);
-                }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return parkingResults;
-        }
-
-        @Override
-        protected void onPostExecute(List<parking> result) {
-                for(parking parking : result) {
-                    freespace.setText(parking.toString());
-                    mMediaUrl = parking.getVideoStreaming();
-                    url.setText(mMediaUrl);
-                    Log.v("FUN9", "id :" + id);
-                }
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    new freespaceTask().execute();
-                }
-            },5000);
-
-
-
-
-
-
-
-           super.onPostExecute(result);
-            }
-
-        }
-
-        // doInBackground runs in a thread separate from the UI thread,
-        // and thus, can perform network operations.
-        // We must invoke this by calling a method named execute().
-
-
-
-
-    }
-
+}

@@ -1,0 +1,99 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.kaunghtetthar.myapplication.fragments.MainFragment">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/sign_in"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/activity_maps" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <Button
+            android:id="@+id/watch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Restart"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="22dp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/freespace"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/freespace"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/distance1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/go"
+                android:layout_toEndOf="@+id/go"
+                android:layout_toRightOf="@+id/go"
+                android:layout_weight="0.31"
+                android:text="Distance"
+                android:textColor="@color/colorAccent"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/duration1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/distance"
+                android:layout_alignBottom="@+id/distance"
+                android:layout_marginLeft="38dp"
+                android:layout_weight="0.25"
+                android:text="Duration"
+                android:textColor="@color/colorAccent"
+                android:textSize="24sp" />
+
+
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:id="@+id/container_locations_list"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentBottom="true">
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/vlc"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentBottom="true">
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/freespace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:textSize="30dp"
+            android:layout_below="@+id/watch"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="30dp" />
+
+    </RelativeLayout>
+
+
+</FrameLayout>
