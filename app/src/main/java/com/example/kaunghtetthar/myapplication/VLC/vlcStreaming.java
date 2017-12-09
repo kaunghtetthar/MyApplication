@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.example.kaunghtetthar.myapplication.DAOs.NetworkDAO;
 import com.example.kaunghtetthar.myapplication.R;
+import com.example.kaunghtetthar.myapplication.activities.MapsActivity;
 import com.example.kaunghtetthar.myapplication.adapters.parkingAdapter;
 import com.example.kaunghtetthar.myapplication.fragments.parking_list;
 import com.example.kaunghtetthar.myapplication.model.parking;
@@ -133,14 +134,14 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(vlcStreaming.this, vlcStreaming.class);
+                Intent intent = new Intent(vlcStreaming.this, MapsActivity.class);
                 intent.putExtra("url", mMediaUrl);
                 intent.putExtra("freespace", freespace1);
                 intent.putExtra("id", id);
                 startActivity(intent);
-                vlcStreaming.this.finish();
+                finish();
             }
-        },30000);
+        },600000);
 
 
 //
