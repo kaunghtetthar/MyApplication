@@ -64,7 +64,7 @@ public class parking_list extends Fragment {
         Bundle bundle= getArguments();
 
             id = bundle.getInt("url");
-            url = "http://kaunghtet912.kcnloveanime.com/freespacejson.php?id=" + id;
+            url = "http://192.41.170.74/carparking/www/freespacejson.php?id=" + id;
             Log.v("TAG8", "id +  :"  + id);
 
 

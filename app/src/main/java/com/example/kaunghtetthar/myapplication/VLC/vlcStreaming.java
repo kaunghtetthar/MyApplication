@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
@@ -25,7 +26,9 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kaunghtetthar.myapplication.DAOs.NetworkDAO;
@@ -34,6 +37,7 @@ import com.example.kaunghtetthar.myapplication.activities.MapsActivity;
 import com.example.kaunghtetthar.myapplication.adapters.parkingAdapter;
 import com.example.kaunghtetthar.myapplication.fragments.parking_list;
 import com.example.kaunghtetthar.myapplication.model.parking;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,6 +47,8 @@ import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,8 +61,10 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
     private Surface mSurface = null;
 
     private String mMediaUrl;
+    private String reloadUrl;
     private String k;
     private String freespace1;
+    private String imgUrl;
     private int id;
 
     private ArrayList<parking> locations;
@@ -65,7 +73,6 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
     private parking_list mListFragment;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
 
 
     private static final boolean USE_SURFACE_VIEW = true;
@@ -87,6 +94,11 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
     private SurfaceView mSubtitlesSurface = null;
     private TextureView mVideoTexture = null;
     private View mVideoView = null;
+    private ImageView loadimage;
+    private Button godriver;
+
+    Bitmap mIcon_val;
+     URL newurl;
 
     private final Handler mHandler = new Handler();
     private View.OnLayoutChangeListener mOnLayoutChangeListener = null;
@@ -103,6 +115,12 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
     private int mVideoSarNum = 0;
     private int mVideoSarDen = 0;
 
+    private LatLng godrive = null;
+    private double latitude = 0;
+    private double longitude = 0;
+    private String freespacego = null;
+    private int id1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +130,8 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
         freespace = (TextView) findViewById(R.id.free_space);
         freespace.setText(getIntent().getExtras().getString("freespace"));
 
+        loadimage = (ImageView) findViewById(R.id.imageView);
+
         url = (TextView) findViewById(R.id.url);
 
         freespaceTask fT = new freespaceTask();
@@ -120,33 +140,229 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
         locations = new ArrayList<>();
         freespace1 = getIntent().getExtras().getString("freespace");
 
+        godriver = (Button) findViewById(R.id.go_drive);
+
+
         final ArrayList<String> args = new ArrayList<>();
         args.add("-vvv");
-        mLibVLC = new LibVLC(this,args);
+        mLibVLC = new LibVLC(this, args);
         mMediaPlayer = new MediaPlayer(mLibVLC);
         id = getIntent().getExtras().getInt("id");
         mMediaUrl = getIntent().getExtras().getString("url");
+        reloadUrl = mMediaUrl;
+        imgUrl = "http://kaunghtet912.kcnloveanime.com/parking_img.jpg";
+
 
         play();
-
 
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(vlcStreaming.this, MapsActivity.class);
-                intent.putExtra("url", mMediaUrl);
+                intent.putExtra("url", reloadUrl);
                 intent.putExtra("freespace", freespace1);
                 intent.putExtra("id", id);
                 startActivity(intent);
-                finish();
+                vlcStreaming.this.finish();
             }
-        },600000);
+        }, 600000);
+
+        new DownloadImageTask((ImageView) findViewById(R.id.imageView))
+                .execute("http://kaunghtet912.kcnloveanime.com/parking_img.jpg");
+
+
+//        try {
+//            newurl = new URL("http://kaunghtet912.kcnloveanime.com/parking_img.jpg");
+//
+//
+//            mIcon_val = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
+//            loadimage.setImageBitmap(mIcon_val);
+//
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
+
+        godriver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                if (godrive != null){
+                   godrive();
+
+                } else {
+                    final AlertDialog.Builder builder2=new AlertDialog.Builder(vlcStreaming.this);
+                    final AlertDialog ad = builder2.create();
+
+
+
+
+                    if (godrive == null) {
+
+                        builder2.setMessage("Loading....");
+                        builder2.create();
+                        builder2.show();
+
+
+                    }
+
+                        Thread timer = new Thread() {
+
+                            public void run() {
+                                try {
+                                    sleep(6000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    godrive();
+
+                                    ad.cancel();
+//                        hidekeyboard();
+
+                                }
+                            }
+                        };
+
+                        timer.start();
+
+
+
+
+                }
+
+
+
+
+
+
+
+
+
+
+            }
+        });
+
+
+    }
+
+    private void godrive() {
+        //To polyline activity
+        final Bundle args = new Bundle();
+        args.putParcelable("LatLng", godrive);
+        Intent intent = new Intent(vlcStreaming.this, MapsActivity.class);
+        intent.putExtra("go", args);
+        intent.putExtra("lat", latitude);
+        intent.putExtra("lng", longitude);
+        intent.putExtra("freespace", freespacego);
+        intent.putExtra("id", id);
+        startActivity(intent);
+
+        if (mOnLayoutChangeListener != null) {
+            mVideoSurfaceFrame.removeOnLayoutChangeListener(mOnLayoutChangeListener);
+            mOnLayoutChangeListener = null;
+        }
+
+        mMediaPlayer.stop();
+
+        mMediaPlayer.getVLCVout().detachViews();
+
+    }
+
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    new DownloadImageTask((ImageView) findViewById(R.id.imageView))
+                            .execute(imgUrl);
+
+                }
+            },10000);
+        }
+    }
+
+    private class ReloadTask extends AsyncTask<Integer, Void, List<parking>> {
+
+
+        String mMediaurl;
+        @Override
+        protected void onPreExecute() {
+//                           recyclerView.setAdapter(null);
+            // Access a NetworkDAO for low level networking functions.
+            super.onPreExecute();
+        }
+
+        @Override
+        protected List<parking> doInBackground(Integer... integers) {
+
+
+            try {
+                Media media = new Media(mLibVLC, Uri.parse(mMediaUrl));
+                mMediaPlayer.setMedia(media);
+                media.release();
+                mMediaPlayer.play();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
+
+            return null;
+        }
+
+
+
+
+        @Override
+        protected void onPostExecute(List<parking> aVoid) {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    new ReloadTask().execute();
+
+                }
+            },10000);
+
+
+            super.onPostExecute(aVoid);
+
+
+        }
+
+
+    };
 
 
 //
 
-    }
+
 
 //    public static void saveFrameLayout(FrameLayout frameLayout, String path) {
 //        frameLayout.setDrawingCacheEnabled(true);
@@ -241,26 +457,23 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
         mMediaPlayer.setMedia(media);
         media.release();
         mMediaPlayer.play();
+        
+
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//
+//                Media media = new Media(mLibVLC, Uri.parse(mMediaUrl));
+//                mMediaPlayer.setMedia(media);
+//                media.release();
+//                mMediaPlayer.play();
+//            }
+//        },10000);
 
 
+        new ReloadTask().execute();
 
-
-        final Handler mHandler1 = new Handler();
-
-        mHandler1.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Media media = new Media(mLibVLC, Uri.parse(mMediaUrl));
-                        mMediaPlayer.setMedia(media);
-                        media.release();
-                        mMediaPlayer.play();
-
-
-                            // Post again 16ms later.
-                            mHandler1.postDelayed(this, 10000);
-
-            }
-        });
 
 
         if (mOnLayoutChangeListener == null) {
@@ -296,7 +509,11 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
         mMediaPlayer.stop();
 
         mMediaPlayer.getVLCVout().detachViews();
+
     }
+
+
+
 
     private void changeMediaPlayerLayout(int displayW, int displayH) {
         /* Change the video placement using the MediaPlayer API */
@@ -483,8 +700,18 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
         mVideoVisibleHeight = visibleHeight;
         mVideoSarNum = sarNum;
         mVideoSarDen = sarDen;
-//        updateVideoSurfaces();
+        updateVideoSurfaces();
     }
+
+    @Override
+    public void onBackPressed() {
+
+
+        this.finish();
+
+        Log.v("Back","CLickBAck");
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -518,7 +745,7 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
         protected ArrayList<parking> doInBackground(Integer... params) {
 
             ArrayList<parking> parkingResults = new ArrayList<>();
-                String url = "http://kaunghtet912.kcnloveanime.com/freespacejson.php?id=" + id;
+                String url = "http://192.41.170.74/carparking/www/freespacejson.php?id=" + id;
 
 //                locations.clear();
                 // Access a NetworkDAO for low level networking functions.
@@ -574,14 +801,22 @@ public class vlcStreaming extends Activity implements IVLCVout.OnNewVideoLayoutL
         protected void onPostExecute(List<parking> result) {
                 for(parking parking : result) {
                     freespace.setText(parking.toString());
-                    mMediaUrl = parking.getVideoStreaming();
+                    reloadUrl = parking.getVideoStreaming();
+                    imgUrl = parking.getVideoStreaming();
                     url.setText(mMediaUrl);
+
+                    id1 = parking.getParkingid();
+                    latitude = parking.getLatitude();
+                    longitude = parking.getLongitude();
+                    godrive = new LatLng(parking.getLatitude() , parking.getLongitude());
+
                     Log.v("FUN9", "id :" + id);
                 }
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     new freespaceTask().execute();
+
                 }
             },5000);
 
