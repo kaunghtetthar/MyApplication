@@ -102,7 +102,7 @@ public class parkingviewholder extends RecyclerView.ViewHolder {
                 intent.putExtra("lng", longitude);
                 intent.putExtra("freespace", location.toString());
                 intent.putExtra("id", location.getParkingid());
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
 
 

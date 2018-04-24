@@ -60,6 +60,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -92,6 +94,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     private GoogleApiClient mGoogleApiClient;
     private Button go;
     private Button watch;
+    private Button circle;
+
     private TextView freespace123;
     private GoogleMap mMap;
     private MarkerOptions userMarker;
@@ -142,6 +146,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     LatLng location1;
 
     LatLng location2;
+    private CircleOptions RedCircle;
+    private CircleOptions GreenCircle;
 
 
     public MapsActivity() {
@@ -315,10 +321,32 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         });
 
 
+        circle = (Button) findViewById(R.id.circle);
+
+        boolean nocircle = true;
+
+
+
+
         //initialize the parkingDAO.
         parkingDAO = new OnlineParkingDAO();
 
+
+
 //        hideList();
+    }
+
+    public  void onMapCircle(){
+
+//        RedCircle = new CircleOptions()
+//                .center(new LatLng(currentlat, currentlng))
+//                .radius(1000)
+//                .strokeColor(Color.RED);
+
+//        GreenCircle = new CircleOptions()
+//                .center(new LatLng(currentlat, currentlng))
+//                .radius(5700)
+//                .strokeColor(Color.GREEN);
     }
 
 
@@ -336,6 +364,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         }
 
 
+
         // Checks, whether start and end locations are captured
         LatLng latLng = userMarker.getPosition();
         LatLng dest = godrive;
@@ -351,6 +380,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         freespaceTask freespace = new freespaceTask();
 
         freespace.execute();
+
+        userMarker.visible(false);
 
 
     }
@@ -726,7 +757,11 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             hellomarker = mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.arrow_icon)).
                     position(curloc).title("Current location : " + curloc.latitude + "," + curloc.longitude));
 
+
             hellomarker.setRotation(-90);
+
+            CameraPosition camera = new CameraPosition(curloc, 15, 0, xvalue);
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
 
 
 //                mSelectedMarker.setRotation(go1);
@@ -751,7 +786,11 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                                             / duration), 0);
                             hellomarker.setAnchor(0.5f, 0.5f);
                             hellomarker.setPosition(curloc);
-                            CameraPosition camera = new CameraPosition(curloc, 15, 0, xvalue);
+                            CameraPosition camera = new CameraPosition(curloc,13, 0, xvalue);
+
+//                            CameraPosition.Builder cameraPosition = new CameraPosition.Builder();
+//                            CameraPosition cameraPosition1 = cameraPosition.bearing(xvalue).build();
+
                             mMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
 
 
@@ -839,7 +878,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
                 // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
-                lineOptions.width(2);
+                lineOptions.width(7);
                 lineOptions.color(Color.RED);
             }
 
@@ -884,7 +923,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         Log.v("DOG", "Long:" + location.getLongitude() + " - Lat:" + location.getLatitude());
         setUserMarker(new LatLng(location.getLatitude(), location.getLongitude()));
 
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
 
         double latitude = location.getLatitude();
@@ -894,6 +933,51 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         currentlng = longitude;
 
         freespacedata = freespaces;
+
+
+            final AlertDialog.Builder builder2=new AlertDialog.Builder(this);
+            final AlertDialog ad = builder2.create();
+
+
+
+
+            if (currentlat == 0) {
+
+                builder2.setMessage("Loading....");
+                builder2.create();
+                builder2.show();
+
+
+            }
+
+            if (currentlat != 0) {
+                ad.cancel();
+            }
+//            else {
+//
+//            Thread timer = new Thread() {
+//
+//                public void run() {
+//                    try {
+//                        sleep(6000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    } finally {
+//                        godrive();
+//
+//                        ad.cancel();
+////                        hidekeyboard();
+//
+//                    }
+//                }
+
+
+
+                ;
+
+//            timer.start();
+
+
 
 
         // create an instance of the ParkingSearchTask
@@ -937,11 +1021,47 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         //move map camera
         if (location1 != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(location1));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location1, 15.0f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location1, 13.0f));
         } else {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
         }
+
+
+        // Add a circle in Current location
+        GreenCircle = new CircleOptions()
+                .center(new LatLng(latLng.latitude, latLng.longitude))
+                .radius(2000)
+                .strokeColor(Color.BLUE);
+
+
+
+        RedCircle = new CircleOptions()
+                .center(new LatLng(latLng.latitude, latLng.longitude))
+                .radius(6000)
+                .strokeColor(Color.RED);
+
+
+        // ... get a map.
+
+
+//         RedCircle.isVisible();
+
+        final boolean c = RedCircle.isVisible();
+
+        circle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Circle red = mMap.addCircle(RedCircle);
+                Circle green = mMap.addCircle(GreenCircle);
+
+
+
+
+            }
+        });
+;
 
 
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
@@ -1133,7 +1253,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 
                 marker = mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon)).position(position).
-                        title(parking.toString()).
+                        title(parking.getLocationAddress() + "-->" + parking.toString()).
                         snippet(String.valueOf(parking.getParkingid())));
 
                 if (parking.getFreeSpace() == 0) {
@@ -1142,6 +1262,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 
                 marker.isVisible();
+
+
 
 
 
@@ -1207,7 +1329,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
             List<parking> parkingResults = new ArrayList<>();
 
-            String url = "http://kcnloveanime.com/kaunghtet912/json.php";
+            String url = "http://192.41.170.74/carparking/www/allupdate.php";
 
 
             // Access a NetworkDAO for low level networking functions.
@@ -1283,9 +1405,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             String url1 = null;
 
             if (goid1 == 0) {
-                 url1 = "http://kaunghtet912.kcnloveanime.com/freespacejson.php?id=" + goid;
+                 url1 = "http://192.41.170.74/carparking/www/freespacejson.php?id=" + goid;
             } else {
-                 url1 = "http://kaunghtet912.kcnloveanime.com/freespacejson.php?id=" + goid1;
+                 url1 = "http://192.41.170.74/carparking/www/freespacejson.php?id=" + goid1;
 
             }
 

@@ -29,6 +29,17 @@
             android:layout_alignParentStart="true"
             android:layout_marginTop="22dp" />
 
+        <Button
+            android:id="@+id/circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Circle"
+
+            android:layout_above="@+id/freespace"
+            android:layout_toRightOf="@+id/watch"
+            android:layout_toEndOf="@+id/watch" />
+
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
@@ -48,7 +59,7 @@
                 android:layout_weight="0.31"
                 android:text="Distance"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/duration1"
@@ -60,7 +71,7 @@
                 android:layout_weight="0.25"
                 android:text="Duration"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
 
         </LinearLayout>

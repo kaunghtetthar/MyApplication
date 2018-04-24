@@ -7,10 +7,55 @@
 
 
     <FrameLayout
+        android:id="@+id/video_frame"
+        android:layout_width="match_parent"
+        android:layout_height="157dp"
+        android:layout_gravity="top"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/go_drive"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_weight="0.38"
+            android:layout_gravity="bottom"
+            android:src="@drawable/cast_ic_notification_0"
+            android:text="go" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="247dp"
+            android:layout_height="206dp"
+            android:layout_gravity="end"
+            android:src="@drawable/home_logo" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/url"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_gravity="center"
+        android:text="camera url :"
+
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/free_space"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:text="free space :"
+        android:layout_gravity="top"
+
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp" />
+
+    <FrameLayout
         android:id="@+id/video_surface_frame"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
+        android:layout_height="232dp"
+        android:layout_gravity="bottom"
         android:foregroundGravity="clip_horizontal|clip_vertical"
         tools:ignore="true">
 
@@ -33,42 +78,6 @@
             android:layout="@layout/texture_view" />
 
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/free_space"
-        android:layout_width="match_parent"
-        android:layout_height="57dp"
-        android:text="free space :"
-        android:layout_gravity="top"
-
-        android:textColor="@color/colorAccent"
-        android:textSize="30dp" />
-
-    <FrameLayout
-        android:id="@+id/video_frame"
-        android:layout_width="match_parent"
-        android:layout_height="121dp"
-        android:layout_gravity="top"
-        android:weightSum="1">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="155dp"
-            android:layout_gravity="right"
-            android:src="@drawable/home_logo" />
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/url"
-        android:layout_width="match_parent"
-        android:layout_height="139dp"
-        android:layout_gravity="bottom"
-        android:text="camera url :"
-
-        android:textColor="@color/colorAccent"
-        android:textSize="30dp" />
 
 
 </FrameLayout>
