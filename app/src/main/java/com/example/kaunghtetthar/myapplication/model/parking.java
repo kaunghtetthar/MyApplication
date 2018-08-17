@@ -19,6 +19,10 @@ public class parking {
         return DRAWABLE + locationImrUrl;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public double getLongitude() {
         return longitude;
     }
@@ -27,6 +31,8 @@ public class parking {
 
         return freespaces;
     }
+
+
 
     public double getLatitude() {
         return latitude;
@@ -65,6 +71,10 @@ public class parking {
 
     public void setLocationTitle(String locationTitle) {
         this.locationTitle = locationTitle;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setLocationAddress(String locationAddress) {
@@ -108,6 +118,7 @@ public class parking {
     }
 
     private String totalslotsTitle;
+    private String name;
     private int freespaces;
     private int totalslots;
     private double longitude;
@@ -127,7 +138,7 @@ public class parking {
 
     public String toString() {
 
-    return  freespaces + "  /  " +  totalslots;
+    return String.valueOf(parkingid);
 
 
         }

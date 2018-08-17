@@ -120,6 +120,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
     double currentlng;
     double currentalti;
 
+    int int_duration;
+    int int_distance;
+
     public static int y;
     private float go1;
     RecyclerView mRecyclerView;
@@ -444,6 +447,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             bundle4.putString("freespace", freespace1);
             bundle4.putInt("id", id);
             // set Fragmentclass Arguments;
+            Log.v("TAG8", "Directions url : " + id);
+
             ListFragment.setArguments(bundle4);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -593,7 +598,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         String output = "json";
 
         // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&mode=walking";
         Log.v("TAG7", "Directions url : " + url);
 
         return url;
@@ -760,7 +765,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
             hellomarker.setRotation(-90);
 
-            CameraPosition camera = new CameraPosition(curloc, 15, 0, xvalue);
+            CameraPosition camera = new CameraPosition(curloc, 16, 0, xvalue);
             mMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
 
 
@@ -786,7 +791,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                                             / duration), 0);
                             hellomarker.setAnchor(0.5f, 0.5f);
                             hellomarker.setPosition(curloc);
-                            CameraPosition camera = new CameraPosition(curloc,13, 0, xvalue);
+                            CameraPosition camera = new CameraPosition(curloc, 16, 0, xvalue);
 
 //                            CameraPosition.Builder cameraPosition = new CameraPosition.Builder();
 //                            CameraPosition cameraPosition1 = cameraPosition.bearing(xvalue).build();
@@ -1021,10 +1026,10 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
         //move map camera
         if (location1 != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(location1));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location1, 13.0f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location1, 15.0f));
         } else {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
         }
 
 
@@ -1329,7 +1334,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
             List<parking> parkingResults = new ArrayList<>();
 
-            String url = "http://192.41.170.74/carparking/www/allupdate.php";
+            String url = "http://192.168.99.46/parking/parking/json.php";
 
 
             // Access a NetworkDAO for low level networking functions.
@@ -1338,8 +1343,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
             try {
                 //make the request
-                String parkingdataAll = networkDAO.request(url);
-                String parkingdata = parkingdataAll.replace("<html>\n</html>","");
+                String parkingdata = networkDAO.request(url);
+//                String parkingdata = parkingdataAll.replace("<html>\n</html>","");
                 Log.v("FUN5", "parking data url :" + parkingdata);
 
 
@@ -1405,9 +1410,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
             String url1 = null;
 
             if (goid1 == 0) {
-                 url1 = "http://192.41.170.74/carparking/www/freespacejson.php?id=" + goid;
+                 url1 = "http://192.168.99.46/parking/parking/freespacejson.php?id=" + goid;
             } else {
-                 url1 = "http://192.41.170.74/carparking/www/freespacejson.php?id=" + goid1;
+                 url1 = "http://192.168.99.46/parking/parking/freespacejson.php?id=" + goid1;
 
             }
 
@@ -1443,6 +1448,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                     parking.setLongitude(jsonParking.getDouble("long"));
                     parking.setFreespaces(jsonParking.getInt("freespace"));
                     parking.setTotalslots(jsonParking.getInt("totalslots"));
+                    parking.setName((jsonParking.getString("name")));
                     parking.setFreespacesTitle("freespaces :");
                     parking.setTotalslotsTitle("totalslots :");
 
@@ -1508,22 +1514,16 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                     ad.cancel();
                 }
 
-
-
-
-
-
-
-                freespace.setText(parking.toString());
+                freespace.setText(parking.getName());
                 Log.v("FUN9", "id :" + id);
                 Log.v("FUN9", "id :" + parking.toString());
             }
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    new freespaceTask().execute();
-                }
-            }, 5000);
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    new freespaceTask().execute();
+//                }
+//            }, 5000);
 
 
             super.onPostExecute(result);
@@ -1591,7 +1591,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
 
                 marker = mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.car_icon)).position(position).
-                        title(parking.toString()).
+                        title(parking.getName()).
                         snippet(String.valueOf(parking.getParkingid())));
 
                 if (parking.getFreeSpace() == 0) {
@@ -1613,20 +1613,20 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                 allparkingresults.addAll(result);
                 Log.v("TAG31", "result:" + allparkingresults.addAll(result));
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        boolean results = allparkingresults.addAll(result);
-
-                        if (results) {
-                            marker.remove();
-                        }
-
-                        new MapsActivity.freespaceTask().execute();
-                        //add a marker to google map
-                    }
-                }, 30000);
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        boolean results = allparkingresults.addAll(result);
+//
+//                        if (results) {
+//                            marker.remove();
+//                        }
+//
+//                        new MapsActivity.freespaceTask().execute();
+//                        //add a marker to google map
+//                    }
+//                }, 30000);
 
             }
 
@@ -1645,7 +1645,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
             List<parking> parkingResults = new ArrayList<>();
 
-            String url = "http://kaunghtet912.kcnloveanime.com/VGLresults.json";
+            String url = "http://192.168.99.46/parking/parking/json.php";
 
 
             // Access a NetworkDAO for low level networking functions.
@@ -1654,7 +1654,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
 
             try {
                 //make the request
-                String parkingdata = networkDAO.request(url);
+                String parkingdataAll = networkDAO.request(url);
+
+                String parkingdata = parkingdataAll.replace("<html>\n</html>","");
 
                 // Pass the data in a JSON objects.
                 JSONArray jsonObject = new JSONArray(parkingdata);
@@ -1670,14 +1672,15 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.On
                     parking parking = new parking();
 
 
-                    parking.setLatitude(jsonParking.getDouble("Lat"));
-                    parking.setLongitude(jsonParking.getDouble("Long"));
+                    parking.setLatitude(jsonParking.getDouble("lat"));
+                    parking.setLongitude(jsonParking.getDouble("long"));
                     parking.setFreespaces(jsonParking.getInt("id"));
                     parking.setVideoStreaming(jsonParking.getString("url"));
                     parking.setLocationAddress(jsonParking.getString("name"));
+                    parking.setName((jsonParking.getString("name")));
                     parking.setTotalslots(jsonParking.getInt("id"));
                     parking.setParkingid(jsonParking.getInt("id"));
-                    Log.v("FUN5", "latlng :" + jsonParking.getDouble("Lat"));
+                    Log.v("FUN5", "latlng :" + jsonParking.getDouble("lat"));
 
 
                     // add the parking object to our results.

@@ -41,16 +41,16 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAG5lJ1EneewJP2NO4nDXnLpdPudc-CSI4" />
+            android:value="AIzaSyAsXTudJuia2tTP3udQ1gzXCiCcKCqEQ1M" />
 
         <activity
             android:name=".activities.Firstpage"
             android:label="@string/title_activity_maps">
-            <intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".activities.FirstActivityMAP"
@@ -65,7 +65,7 @@
         <activity
             android:name=".activities.HomePage"
             android:icon="@drawable/car_icon"
-            android:label="Car Parking">
+            android:label="Bus route">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -79,11 +79,11 @@
             android:label="CarParking"
             android:windowSoftInputMode="stateHidden|adjustPan"
             android:screenOrientation="portrait">
-            <intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".REST.Restful"

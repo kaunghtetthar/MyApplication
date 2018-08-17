@@ -64,8 +64,8 @@ public class parking_list extends Fragment {
         Bundle bundle= getArguments();
 
             id = bundle.getInt("url");
-            url = "http://192.41.170.74/carparking/www/freespacejson.php?id=" + id;
-            Log.v("TAG8", "id +  :"  + id);
+            url = "http://192.168.99.46/parking/parking/freespacejson.php?id=" + id;
+            Log.v("id21", "id +  :"  + url);
 
 
 
@@ -118,6 +118,8 @@ public class parking_list extends Fragment {
                 ProgressDialog myPd_bar;
                 String url = parking_list.url;
 
+
+
                      @Override
                      protected void onPreExecute() {
 //                           recyclerView.setAdapter(null);
@@ -138,14 +140,15 @@ public class parking_list extends Fragment {
 
                         //make the request
                         String parkingdataAll = networkDAO.request(url);
+                        Log.v("url_p", "id +  :"  + url);
                         String parkingdata = parkingdataAll.replace("<html>\n</html>","");
-
+                        Log.v("id22", "id +  :"  + parkingdata);
 
                         Log.v("TAG9", "id +  :"  + url);
 
                         // Pass the data in a JsSON objects.
                         JSONArray jsonObject = new JSONArray(parkingdata);
-                        Log.v("FUN5", "freespace :" + jsonObject);
+                        Log.v("FUN30", "freespace :" + jsonObject);
 
                         // iterate over the collections of parkings from json
                         for (int i = 0; i < jsonObject.length(); i++) {
@@ -159,14 +162,15 @@ public class parking_list extends Fragment {
 
                             parking.setLatitude(jsonParking.getDouble("lat"));
                             parking.setLongitude(jsonParking.getDouble("long"));
-                            parking.setFreespaces(jsonParking.getInt("freespace"));
-                            parking.setTotalslots(jsonParking.getInt("totalslots"));
+//                            parking.setFreespaces(jsonParking.getInt("freespace"));
+//                            parking.setTotalslots(jsonParking.getInt("totalslots"));
                             parking.setParkingid(jsonParking.getInt("id"));
                             parking.setFreespacesTitle("freespaces :");
-                            parking.setTotalslotsTitle("Totalslots :");
+//                            parking.setTotalslotsTitle("Totalslots :");
                             parking.setParkingid(jsonParking.getInt("id"));
+                            parking.setName((jsonParking.getString("name")));
 
-                            Log.v("FUN5", "freespace :" + jsonParking.getInt("freespace"));
+                            Log.v("freespace_parking", "freespace :" + jsonParking.getInt("freespace"));
                             parking.setVideoStreaming(jsonParking.getString("url"));
                             parking.setLocationAddress(jsonParking.getString("name"));
 
@@ -190,13 +194,13 @@ public class parking_list extends Fragment {
                 @Override
                 protected void onPostExecute(List<parking> aVoid) {
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            new DoBackgroundTask().execute();
-
-                        }
-                    },3000);
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            new DoBackgroundTask().execute();
+//
+//                        }
+//                    },3000);
 
                         recyclerView.setAdapter(adapter);
 
